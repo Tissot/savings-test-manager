@@ -1,6 +1,8 @@
 <template>
   <div id="app">
-    <router-view></router-view>
+    <transition name="fade" mode="out-in">
+      <router-view class="page"></router-view>
+    </transition>
   </div>
 </template>
 
@@ -15,5 +17,21 @@
     font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+  }
+
+  .page {
+    position: absolute;
+    width: 100%;
+  }
+
+  // 过渡效果及动画类
+  .fade-enter-active,
+  .fade-leave-active {
+    transition: all .6s cubic-bezier(.5, 0, .5, 1);
+  }
+
+  .fade-enter,
+  .fade-leave-to {
+    opacity: 0;
   }
 </style>

@@ -9,6 +9,7 @@ import {
   input,
   menu,
   menuItem,
+  message,
   submenu
 } from 'element-ui'
 
@@ -19,3 +20,5 @@ Vue.use(input)
 Vue.use(menu)
 Vue.use(menuItem)
 Vue.use(submenu)
+
+Vue.prototype.$message = message
