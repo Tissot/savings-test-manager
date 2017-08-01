@@ -80,6 +80,12 @@
 
             setTimeout(() => {
               if (this.manager.account === 'manager' && this.manager.password === '123') {
+                this.$message({
+                  showClose: true,
+                  message: '登錄成功',
+                  type: 'success'
+                })
+
                 this.$router.push('/manager')
               } else {
                 this.signingIn = false

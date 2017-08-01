@@ -10,7 +10,9 @@ import {
   menu,
   menuItem,
   message,
-  submenu
+  select,
+  submenu,
+  option
 } from 'element-ui'
 
 Vue.use(button)
@@ -19,6 +21,8 @@ Vue.use(formItem)
 Vue.use(input)
 Vue.use(menu)
 Vue.use(menuItem)
+Vue.use(select)
 Vue.use(submenu)
+Vue.use(option)
 
 Vue.prototype.$message = message
