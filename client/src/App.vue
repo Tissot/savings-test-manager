@@ -22,12 +22,14 @@
   .page {
     position: absolute;
     width: 100%;
+    min-width: 1024px;
+    height: 100%;
   }
 
   // 过渡效果及动画类
   .fade-enter-active,
   .fade-leave-active {
-    transition: all .6s cubic-bezier(.5, 0, .5, 1);
+    transition: all .3s cubic-bezier(.5, 0, .5, 1);
   }
 
   .fade-enter,
