@@ -5,7 +5,7 @@ import VueRouter from 'vue-router'
 
 import index from '../views/index'
 import manager from '../views/manager'
-import wellcome from '../views/wellcome'
+import welcome from '../views/welcome'
 import usersManagement from '../views/users-management'
 import onlineContentLinksManagement from '../views/online-content-links-management'
 import questionsManagement from '../views/questions-management'
@@ -22,7 +22,7 @@ export default new VueRouter({
       path: '/manager',
       component: manager,
       children: [
-        { path: '/', component: wellcome },
+        { path: '/', component: welcome },
         { path: 'users-management', component: usersManagement },
         { path: 'online-content-links-management', component: onlineContentLinksManagement },
         { path: 'questions-management', component: questionsManagement },
