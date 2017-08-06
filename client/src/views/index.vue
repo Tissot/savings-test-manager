@@ -7,7 +7,13 @@
         </transition>
         <el-button type="primary" :loading="togglingBackground" @click="backgroundFadeOut" class="toggle-background">{{ togglingBackground === true ? '正在切換' : '切換背景' }}</el-button>
         <transition name="sign-in-form-slide-in">
-          <el-form :model="manager" ref="signInForm" v-show="signInFormVisible" @submit.native.prevent class="sign-in-container">
+          <el-form
+            :model="manager"
+            ref="signInForm"
+            v-show="signInFormVisible"
+            @submit.native.prevent
+            class="sign-in-container"
+          >
             <span class="sign-in-header">管理員登錄</span>
             <el-form-item prop="account" :rules="{ required: true, message: '請輸入管理員帳號', trigger: 'change' }">
               <el-input size="large" placeholder="管理員帳號" v-model.trim="manager.account"></el-input>
@@ -16,7 +22,13 @@
               <el-input type="password" size="large" placeholder="密碼" v-model="manager.password"></el-input>
             </el-form-item>    
             <el-form-item>
-              <el-button native-type="submit" type="primary" size="large" :loading="signingIn" @click="signIn">{{ signingIn === true ? '正在登錄' : '登錄' }}</el-button>
+              <el-button
+                native-type="submit"
+                type="primary"
+                size="large"
+                :loading="signingIn"
+                @click="signIn"
+              >{{ signingIn === true ? '正在登錄' : '登錄' }}</el-button>
             </el-form-item>
           </el-form>
         </transition>
