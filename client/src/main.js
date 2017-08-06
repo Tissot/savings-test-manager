@@ -15,6 +15,9 @@ import App from './App'
 import router from './scripts/router'
 import store from './store/index'
 
+// 引入样式覆盖
+import './assets/styles/element-ui-cover.less'
+
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
