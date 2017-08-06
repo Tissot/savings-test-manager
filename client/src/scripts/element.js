@@ -12,6 +12,10 @@ import {
   message,
   select,
   submenu,
+  table,
+  tableColumn,
+  tabPane,
+  tabs,
   option
 } from 'element-ui'
 
@@ -23,6 +27,10 @@ Vue.use(menu)
 Vue.use(menuItem)
 Vue.use(select)
 Vue.use(submenu)
+Vue.use(table)
+Vue.use(tableColumn)
+Vue.use(tabPane)
+Vue.use(tabs)
 Vue.use(option)
 
 Vue.prototype.$message = message
