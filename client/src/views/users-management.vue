@@ -24,7 +24,7 @@
       <div class="toolbar">
         <div>
           <el-button type="primary" icon="plus">添加用戶</el-button>
-          <el-button type="danger" icon="delete2">刪除用戶</el-button>
+          <el-button type="danger" :disabled="usersSelected.length === 0" icon="delete2">刪除用戶</el-button>
         </div>
         <el-input placeholder="请输入搜索内容" v-model="search.content">
           <el-select v-model="search.type" slot="prepend" placeholder="類型">
