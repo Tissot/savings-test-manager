@@ -2,15 +2,21 @@
   <div id="users-management">
     <h2>用戶管理</h2>
     <el-tabs v-model="activeName" @tab-click="storageActiveName">
-      <el-tab-pane v-for="tab of tabs" :key="tab.name" :label="tab.label" :name="tab.name"></el-tab-pane>
-      <el-table :data="users" ref="usersTable" :border="true" max-height="448">
+      <el-tab-pane v-for="tab of tabs" :key="tab.name" :name="tab.name" :label="tab.label"></el-tab-pane> 
+      <el-table
+        :data="users"
+        ref="usersTable"
+        :border="true"
+        max-height="448"
+        @selection-change="toggleUsersSelected"
+      >
         <el-table-column 
           v-for="usersTableColumn of usersTableColumns"
           :key="usersTableColumn.prop"
           :fixed="usersTableColumn.fixed"
           :type="usersTableColumn.type"
-          :label="usersTableColumn.label"
           :prop="usersTableColumn.prop"
+          :label="usersTableColumn.label"
           :width="usersTableColumn.width"
           :min-width="usersTableColumn.minWidth"
         ></el-table-column>
@@ -43,172 +49,138 @@
     data () {
       return {
         activeName: window.sessionStorage.getItem('usersManagementActiveName'),
-        mediaQueryList: window.matchMedia('(min-width: 1208px)'),
+        mediaQueryList: window.matchMedia('(min-width: 1188px)'),
         tabs: [
           {
-            label: 'Peer Support 組',
-            name: 'Peer Support'
+            name: '0',
+            label: 'Peer Support 組'
           },
           {
-            label: 'Earmarking Saving 組',
-            name: 'Earmarking Saving'
+            name: '1',
+            label: 'Earmarking Saving 組'
           },
           {
-            label: '雙重干預組',
-            name: 'Double Intervention'
+            name: '2',
+            label: '雙重干預組'
           },
           {
-            label: '空白對照組',
-            name: 'Blank Control'
+            name: '3',
+            label: '空白對照組'
           }
         ],
         users: [
           {
             mobliePhone: '+8613590175732',
             name: '譚樞銘',
+            nickname: '爸爸就是這麼菜啊',
             sex: '男',
-            mailBox: '759453441@qq.com',
             group: 'Peer Support 組'
           },
           {
             mobliePhone: '13590175735',
             name: '譚樞譚樞',
+            nickname: '爸爸就是這麼菜啊',
             sex: '女',
-            mailBox: '759453442@qq.com',
             group: 'Earmarking Saving 組'
           },
           {
             mobliePhone: '+8613590175732',
             name: '譚樞銘',
+            nickname: '爸爸就是這麼菜啊',
             sex: '男',
-            mailBox: '759453441@qq.com',
             group: 'Peer Support 組'
           },
           {
             mobliePhone: '13590175735',
             name: '譚樞譚樞',
+            nickname: '爸爸就是這麼菜啊',
             sex: '女',
-            mailBox: '759453442@qq.com',
             group: 'Earmarking Saving 組'
           },
           {
             mobliePhone: '+8613590175732',
             name: '譚樞銘',
+            nickname: '爸爸就是這麼菜啊',
             sex: '男',
-            mailBox: '759453441@qq.com',
             group: 'Peer Support 組'
           },
           {
             mobliePhone: '13590175735',
             name: '譚樞譚樞',
+            nickname: '爸爸就是這麼菜啊',
             sex: '女',
-            mailBox: '759453442@qq.com',
             group: 'Earmarking Saving 組'
           },
           {
             mobliePhone: '+8613590175732',
             name: '譚樞銘',
+            nickname: '爸爸就是這麼菜啊',
             sex: '男',
-            mailBox: '759453441@qq.com',
             group: 'Peer Support 組'
           },
           {
             mobliePhone: '13590175735',
             name: '譚樞譚樞',
+            nickname: '爸爸就是這麼菜啊',
             sex: '女',
-            mailBox: '759453442@qq.com',
             group: 'Earmarking Saving 組'
           },
           {
             mobliePhone: '+8613590175732',
             name: '譚樞銘',
+            nickname: '爸爸就是這麼菜啊',
             sex: '男',
-            mailBox: '759453441@qq.com',
             group: 'Peer Support 組'
           },
           {
             mobliePhone: '13590175735',
             name: '譚樞譚樞',
+            nickname: '爸爸就是這麼菜啊',
             sex: '女',
-            mailBox: '759453442@qq.com',
             group: 'Earmarking Saving 組'
           },
           {
             mobliePhone: '+8613590175732',
             name: '譚樞銘',
+            nickname: '爸爸就是這麼菜啊',
             sex: '男',
-            mailBox: '759453441@qq.com',
             group: 'Peer Support 組'
           },
           {
             mobliePhone: '13590175735',
             name: '譚樞譚樞',
+            nickname: '爸爸就是這麼菜啊',
             sex: '女',
-            mailBox: '759453442@qq.com',
             group: 'Earmarking Saving 組'
           },
           {
             mobliePhone: '+8613590175732',
             name: '譚樞銘',
+            nickname: '爸爸就是這麼菜啊',
             sex: '男',
-            mailBox: '759453441@qq.com',
             group: 'Peer Support 組'
           },
           {
             mobliePhone: '13590175735',
             name: '譚樞譚樞',
+            nickname: '爸爸就是這麼菜啊',
             sex: '女',
-            mailBox: '759453442@qq.com',
             group: 'Earmarking Saving 組'
-          },
-          {
-            mobliePhone: '+8613590175732',
-            name: '譚樞銘',
-            sex: '男',
-            mailBox: '759453441@qq.com',
-            group: 'Peer Support 組'
-          },
-          {
-            mobliePhone: '13590175735',
-            name: '譚樞譚樞',
-            sex: '女',
-            mailBox: '759453442@qq.com',
-            group: 'Earmarking Saving 組'
-          },
-          {
-            mobliePhone: '+8613590175732',
-            name: '譚樞銘',
-            sex: '男',
-            mailBox: '759453441@qq.com',
-            group: 'Peer Support 組'
-          },
-          {
-            mobliePhone: '13590175735',
-            name: '譚樞譚樞',
-            sex: '女',
-            mailBox: '759453442@qq.com',
-            group: 'Earmarking Saving 組'
-          },
-          {
-            mobliePhone: '+8613590175732',
-            name: '譚樞銘',
-            sex: '男',
-            mailBox: '759453441@qq.com',
-            group: 'Peer Support 組'
           }
         ],
+        usersSelected: [],
         search: {
           type: 'mobilePhone',
           content: ''
         },
         searchOptions: [
           {
-            label: '手機',
-            value: 'mobilePhone'
+            value: 'mobilePhone',
+            label: '手機'
           },
           {
-            label: '姓名',
-            value: 'name'
+            value: 'name',
+            label: '姓名'
           }
         ]
       }
@@ -222,28 +194,28 @@
             width: '54'
           },
           {
-            label: '手機',
             prop: 'mobliePhone',
+            label: '手機',
             minWidth: '150'
           },
           {
-            label: '姓名',
             prop: 'name',
+            label: '姓名',
             minWidth: '110'
           },
           {
-            label: '性別',
+            prop: 'nickname',
+            label: '暱稱',
+            minWidth: '180'
+          },
+          {
             prop: 'sex',
+            label: '性別',
             minWidth: '70'
           },
           {
-            label: '郵箱',
-            prop: 'mailBox',
-            minWidth: '200'
-          },
-          {
-            label: '分組',
             prop: 'group',
+            label: '分組',
             minWidth: '180'
           }
         ]
@@ -273,11 +245,14 @@
         }
       },
       mediaQueryListChanged () {
-        console.log()
-        this.mediaQueryList = window.matchMedia('(min-width: 1208px)')
+        this.mediaQueryList = window.matchMedia('(min-width: 1188px)')
       },
       storageActiveName (tab) {
         window.sessionStorage.setItem('usersManagementActiveName', tab.name)
+      },
+      toggleUsersSelected (usersSelected) {
+        console.log(usersSelected)
+        this.usersSelected = usersSelected
       },
       editUser (index, row) {
         console.log(index, row)
@@ -303,7 +278,7 @@
   #users-management {
     .el-table {
       .el-table__body-wrapper {
-        @media screen and (min-width: 1208px) {
+        @media screen and (min-width: 1188px) {
           overflow-x: hidden;
         }
       }
