@@ -12,11 +12,15 @@
           <el-menu-item index="/manager/integration-exchange-situation">積分兌換情况</el-menu-item>
         </el-menu>
       </div>
-      <el-button type="danger" size="large" @click="signOut">退出登錄</el-button>  
+      <div class="sign-out-container">
+        <el-button type="danger" size="large" @click="signOut">退出登錄</el-button>
+      </div>
     </nav>
-    <transition name="fade" mode="out-in">
-      <router-view class="manager-page"></router-view> 
-    </transition>
+    <section>
+      <transition name="fade" mode="out-in">
+        <router-view class="manager-page"></router-view> 
+      </transition>
+    </section>
   </div>
 </template>
 
@@ -49,7 +53,7 @@
 
     nav {
       width: 240px;
-      height: 100vh;
+      height: 100%;
       background-color: #eef1f6;
       overflow-x: hidden;
       z-index: 4;
@@ -72,33 +76,42 @@
         cursor: pointer;
       }
 
-      .el-button {
-        width: 200px;
-        margin: 16px 20px 31px;
+      .sign-out-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 72px;
+
+        .el-button {
+          width: 200px;
+        }
       }
     }
 
-    .manager-page {
-      position: absolute;
-      left: 240px;
-      padding: 20px 20px 31px;
+    section {
+      padding: 20px;
       width: ~"calc(100% - 240px)";
       height: 100%;
       overflow-y: auto;
 
-      h2 {
-        display: flex;
-        align-items: center;
-        margin-bottom: 20px;
-        height: 40px;
-        font-size: 20px;
-        font-weight: normal;
-      }
+      .manager-page {
+        max-width: 1920px;
+        margin: 0 auto;
 
-      h3 {
-        font-size: 18px;
-        font-weight: normal;
-        margin: 16px 0;
+        h2 {
+          display: flex;
+          align-items: center;
+          margin-bottom: 20px;
+          height: 40px;
+          font-size: 20px;
+          font-weight: normal;
+        }
+
+        h3 {
+          font-size: 18px;
+          font-weight: normal;
+          margin: 16px 0;
+        }
       }
     }
   }
