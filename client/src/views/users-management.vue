@@ -3,53 +3,29 @@
     <h2>用戶管理</h2>
     <el-tabs v-model="activeName" @tab-click="storageActiveName">
       <el-tab-pane v-for="tab of tabs" :key="tab.name" :name="tab.name" :label="tab.label"></el-tab-pane> 
-      <el-table
-        :data="users"
-        ref="usersTable"
-        :border="true"
-        max-height="448"
-        @selection-change="toggleUsersSelected"
-      >
-        <el-table-column 
-          v-for="usersTableColumn of usersTableColumns"
-          :key="usersTableColumn.prop"
-          :fixed="usersTableColumn.fixed"
-          :type="usersTableColumn.type"
-          :prop="usersTableColumn.prop"
-          :label="usersTableColumn.label"
-          :width="usersTableColumn.width"
-          :min-width="usersTableColumn.minWidth"
-        ></el-table-column>
-        <el-table-column :fixed="mediaQueryList.matches ? false : 'right'" label="操作" width="147">
-          <template scope="scope">
-            <el-button type="text" icon="edit" @click="editUser(scope.$index, scope.row)">編輯</el-button>
-            <el-button type="text" icon="delete2" @click="deleteUser(scope.$index, scope.row)">刪除</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-      <div class="toolbar">
-        <div>
-          <el-button type="primary" icon="plus">添加用戶</el-button>
-          <el-button type="danger" :disabled="usersSelected.length === 0" icon="delete2">刪除用戶</el-button>
-        </div>
-        <el-input placeholder="请输入搜索内容" v-model="search.content">
-          <el-select v-model="search.type" slot="prepend" placeholder="類型">
-            <el-option v-for="searchOption of searchOptions" :key="searchOption.value" :label="searchOption.label" :value="searchOption.value"></el-option>
-          </el-select>
-          <el-button slot="append" icon="search"></el-button>
-        </el-input>
-      </div>
+      <details-table
+        :table.sync="table"
+        :toolbar="toolbar"
+        :search.sync="search"
+        @edit-user="editUser"
+        @delete-user="deleteUser"
+      ></details-table>
     </el-tabs>
   </div>
 </template>
 
 <script>
+  import detailsTable from '../components/details-table'
+
   export default {
     name: 'users-management',
+    components: {
+      detailsTable
+    },
     data () {
       return {
         activeName: window.sessionStorage.getItem('usersManagementActiveName'),
-        mediaQueryList: window.matchMedia('(min-width: 1188px)'),
+        sex: ['男', '女'],
         tabs: [
           {
             name: '0',
@@ -68,157 +44,160 @@
             label: '空白對照組'
           }
         ],
-        users: [
-          {
-            mobliePhone: '+8613590175732',
-            name: '譚樞銘',
-            nickname: '爸爸就是這麼菜啊',
-            sex: '男',
-            group: 'Peer Support 組'
-          },
-          {
-            mobliePhone: '13590175735',
-            name: '譚樞譚樞',
-            nickname: '爸爸就是這麼菜啊',
-            sex: '女',
-            group: 'Earmarking Saving 組'
-          },
-          {
-            mobliePhone: '+8613590175732',
-            name: '譚樞銘',
-            nickname: '爸爸就是這麼菜啊',
-            sex: '男',
-            group: 'Peer Support 組'
-          },
-          {
-            mobliePhone: '13590175735',
-            name: '譚樞譚樞',
-            nickname: '爸爸就是這麼菜啊',
-            sex: '女',
-            group: 'Earmarking Saving 組'
-          },
-          {
-            mobliePhone: '+8613590175732',
-            name: '譚樞銘',
-            nickname: '爸爸就是這麼菜啊',
-            sex: '男',
-            group: 'Peer Support 組'
-          },
-          {
-            mobliePhone: '13590175735',
-            name: '譚樞譚樞',
-            nickname: '爸爸就是這麼菜啊',
-            sex: '女',
-            group: 'Earmarking Saving 組'
-          },
-          {
-            mobliePhone: '+8613590175732',
-            name: '譚樞銘',
-            nickname: '爸爸就是這麼菜啊',
-            sex: '男',
-            group: 'Peer Support 組'
-          },
-          {
-            mobliePhone: '13590175735',
-            name: '譚樞譚樞',
-            nickname: '爸爸就是這麼菜啊',
-            sex: '女',
-            group: 'Earmarking Saving 組'
-          },
-          {
-            mobliePhone: '+8613590175732',
-            name: '譚樞銘',
-            nickname: '爸爸就是這麼菜啊',
-            sex: '男',
-            group: 'Peer Support 組'
-          },
-          {
-            mobliePhone: '13590175735',
-            name: '譚樞譚樞',
-            nickname: '爸爸就是這麼菜啊',
-            sex: '女',
-            group: 'Earmarking Saving 組'
-          },
-          {
-            mobliePhone: '+8613590175732',
-            name: '譚樞銘',
-            nickname: '爸爸就是這麼菜啊',
-            sex: '男',
-            group: 'Peer Support 組'
-          },
-          {
-            mobliePhone: '13590175735',
-            name: '譚樞譚樞',
-            nickname: '爸爸就是這麼菜啊',
-            sex: '女',
-            group: 'Earmarking Saving 組'
-          },
-          {
-            mobliePhone: '+8613590175732',
-            name: '譚樞銘',
-            nickname: '爸爸就是這麼菜啊',
-            sex: '男',
-            group: 'Peer Support 組'
-          },
-          {
-            mobliePhone: '13590175735',
-            name: '譚樞譚樞',
-            nickname: '爸爸就是這麼菜啊',
-            sex: '女',
-            group: 'Earmarking Saving 組'
-          }
-        ],
-        usersSelected: [],
-        search: {
-          type: 'mobilePhone',
-          content: ''
+        table: {
+          ref: 'usersTable',
+          border: true,
+          maxHeight: '448',
+          data: [
+            {
+              mobliePhone: '+85213590175732',
+              name: '譚樞銘',
+              nickname: '爸爸就是這麼菜啊',
+              sex: 0,
+              group: 0
+            },
+            {
+              mobliePhone: '13590175735',
+              name: '譚樞譚樞',
+              nickname: '爸爸就是這麼菜啊',
+              sex: 1,
+              group: 1
+            },
+            {
+              mobliePhone: '+85213590175732',
+              name: '譚樞銘',
+              nickname: '爸爸就是這麼菜啊',
+              sex: 0,
+              group: 0
+            },
+            {
+              mobliePhone: '13590175735',
+              name: '譚樞譚樞',
+              nickname: '爸爸就是這麼菜啊',
+              sex: 1,
+              group: 1
+            },
+            {
+              mobliePhone: '+85213590175732',
+              name: '譚樞銘',
+              nickname: '爸爸就是這麼菜啊',
+              sex: 0,
+              group: 0
+            },
+            {
+              mobliePhone: '13590175735',
+              name: '譚樞譚樞',
+              nickname: '爸爸就是這麼菜啊',
+              sex: 1,
+              group: 1
+            },
+            {
+              mobliePhone: '+85213590175732',
+              name: '譚樞銘',
+              nickname: '爸爸就是這麼菜啊',
+              sex: 0,
+              group: 0
+            },
+            {
+              mobliePhone: '13590175735',
+              name: '譚樞譚樞',
+              nickname: '爸爸就是這麼菜啊',
+              sex: 1,
+              group: 1
+            },
+            {
+              mobliePhone: '+85213590175732',
+              name: '譚樞銘',
+              nickname: '爸爸就是這麼菜啊',
+              sex: 0,
+              group: 0
+            },
+            {
+              mobliePhone: '13590175735',
+              name: '譚樞譚樞',
+              nickname: '爸爸就是這麼菜啊',
+              sex: 1,
+              group: 1
+            },
+            {
+              mobliePhone: '+85213590175732',
+              name: '譚樞銘',
+              nickname: '爸爸就是這麼菜啊',
+              sex: 0,
+              group: 0
+            },
+            {
+              mobliePhone: '13590175735',
+              name: '譚樞譚樞',
+              nickname: '爸爸就是這麼菜啊',
+              sex: 1,
+              group: 1
+            },
+            {
+              mobliePhone: '+85213590175732',
+              name: '譚樞銘',
+              nickname: '爸爸就是這麼菜啊',
+              sex: 0,
+              group: 0
+            },
+            {
+              mobliePhone: '13590175735',
+              name: '譚樞譚樞',
+              nickname: '爸爸就是這麼菜啊',
+              sex: 1,
+              group: 1
+            }
+          ],
+          dataSelected: [],
+          columns: [
+            {
+              prop: 'mobliePhone',
+              label: '手機',
+              minWidth: '160'
+            },
+            {
+              prop: 'name',
+              label: '姓名',
+              minWidth: '110'
+            },
+            {
+              prop: 'nickname',
+              label: '暱稱',
+              minWidth: '180'
+            },
+            {
+              prop: 'sex',
+              label: '性別',
+              minWidth: '70'
+            },
+            {
+              prop: 'group',
+              label: '分組',
+              minWidth: '180'
+            }
+          ],
+          rowOperation: true,
+          columnsFixedWidth: '1188'
         },
-        searchOptions: [
-          {
-            value: 'mobilePhone',
-            label: '手機'
-          },
-          {
-            value: 'name',
-            label: '姓名'
-          }
-        ]
-      }
-    },
-    computed: {
-      usersTableColumns () {
-        return [
-          {
-            fixed: this.mediaQueryList.matches ? false : 'left',
-            type: 'selection',
-            width: '54'
-          },
-          {
-            prop: 'mobliePhone',
-            label: '手機',
-            minWidth: '150'
-          },
-          {
-            prop: 'name',
-            label: '姓名',
-            minWidth: '110'
-          },
-          {
-            prop: 'nickname',
-            label: '暱稱',
-            minWidth: '180'
-          },
-          {
-            prop: 'sex',
-            label: '性別',
-            minWidth: '70'
-          },
-          {
-            prop: 'group',
-            label: '分組',
-            minWidth: '180'
-          }
-        ]
+        toolbar: {
+          addButton: true,
+          deleteButton: true,
+          searchBar: true
+        },
+        search: {
+          options: [
+            {
+              value: 0,
+              label: '手機'
+            },
+            {
+              value: 1,
+              label: '姓名'
+            }
+          ],
+          type: 0,
+          content: ''
+        }
       }
     },
     methods: {
@@ -232,69 +211,45 @@
         if (this.activeName === null) {
           this.initActiveName()
         } else {
-          for (let tab of this.tabs) {
-            if (this.activeName === tab.name) {
+          this.tabs.every((element) => {
+            if (this.activeName === element.name) {
               activeNameExited = true
-              break
+              return false
             }
-          }
+            return true
+          })
 
           if (activeNameExited === false) {
             this.initActiveName()
           }
         }
       },
-      mediaQueryListChanged () {
-        this.mediaQueryList = window.matchMedia('(min-width: 1188px)')
+      formatTableData () {
+        this.table.data.forEach((element) => {
+          element.sex = this.sex[element.sex]
+          element.group = this.tabs[element.group].label
+        })
       },
       storageActiveName (tab) {
         window.sessionStorage.setItem('usersManagementActiveName', tab.name)
       },
-      toggleUsersSelected (usersSelected) {
-        console.log(usersSelected)
-        this.usersSelected = usersSelected
+      editUser (scope) {
+        console.log(scope)
       },
-      editUser (index, row) {
-        console.log(index, row)
-      },
-      deleteUser (index, row) {
-        console.log(index, row)
+      deleteUser (scope) {
+        console.log(scope)
       }
     },
     created () {
       this.checkActiveName()
-    },
-    mounted () {
-      this.mediaQueryList.addListener(this.mediaQueryListChanged)
-      this.mediaQueryListChanged()
-    },
-    destroyed () {
-      this.mediaQueryList.removeListener(this.mediaQueryListChanged)
+      this.formatTableData()
+
+      this.table.data
     }
   }
 </script>
 
 <style lang="less">
   #users-management {
-    .el-table {
-      .el-table__body-wrapper {
-        @media screen and (min-width: 1188px) {
-          overflow-x: hidden;
-        }
-      }
-
-      .el-button + .el-button {
-        color: #ff4949;
-      }
-    }
-
-    .toolbar {
-      display: flex;
-      justify-content: space-between;
-    }
-
-    .el-button + .el-button {
-      margin-left: 12px;
-    }
   }
 </style>
