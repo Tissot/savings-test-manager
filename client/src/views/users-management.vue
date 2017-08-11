@@ -158,7 +158,7 @@
             {
               prop: 'name',
               label: '姓名',
-              minWidth: '110'
+              minWidth: '180'
             },
             {
               prop: 'nickname',
@@ -177,7 +177,7 @@
             }
           ],
           rowOperation: true,
-          columnsFixedWidth: '1188'
+          columnsFixedWidth: '1270'
         },
         toolbar: {
           addButton: true,
@@ -195,7 +195,7 @@
               label: '姓名'
             }
           ],
-          type: 0,
+          type: '',
           content: ''
         }
       }
