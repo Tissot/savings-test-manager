@@ -21,16 +21,14 @@
             <el-form-item prop="password" :rules="{ required: true, message: '請輸入密碼', trigger:'change' }">
               <el-input type="password" size="large" placeholder="密碼" v-model="manager.password"></el-input>
             </el-form-item>    
-            <el-form-item>
-              <el-button
-                native-type="submit"
-                type="primary"
-                size="large"
-                :loading="signingIn"
-                @click="signIn"
-              >{{ signingIn === true ? '正在登錄' : '登錄' }}</el-button>
-            </el-form-item>
-          </el-form>
+            <el-button
+              native-type="submit"
+              type="primary"
+              size="large"
+              :loading="signingIn"
+              @click="signIn"
+            >{{ signingIn === true ? '正在登錄' : '登錄' }}</el-button>
+        </el-form>
         </transition>
       </div>
     </transition>
@@ -113,7 +111,7 @@
         })
       }
     },
-    mounted () {
+    created () {
       this.background.num = Math.floor(Math.random() * this.background.size)
 
       this.indexVisible = true
@@ -153,7 +151,7 @@
       align-items: center;
       width: 400px;
       background-color: rgba(255, 255, 255, .8);
-      padding: 36px 0 16px;
+      padding: 36px 0 48px;
       border-radius: 8px;
 
       .sign-in-header {
