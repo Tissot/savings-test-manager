@@ -40,3 +40,8 @@ Vue.use(tabs)
 Vue.use(option)
 
 Vue.prototype.$message = message
+
+import lang from 'element-ui/lib/locale/lang/zh-TW'
+import locale from 'element-ui/lib/locale'
+
+locale.use(lang)
