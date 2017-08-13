@@ -84,7 +84,7 @@
         this.toggleBackgroundVisible()
       },
       signIn () {
-        this.$refs['signInForm'].validate(async (isValid) => {
+        this.$refs.signInForm.validate(async (isValid) => {
           if (isValid === true) {
             this.signingIn = true
 

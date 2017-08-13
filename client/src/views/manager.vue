@@ -95,7 +95,7 @@
       overflow-y: auto;
 
       .manager-page {
-        max-width: 1920px;
+        max-width: 1680px;
         margin: 0 auto;
 
         h2 {
