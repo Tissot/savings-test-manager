@@ -4,12 +4,15 @@ import Vue from 'vue'
 
 import {
   button,
+  dialog,
   form,
   formItem,
   input,
   menu,
   menuItem,
   message,
+  radio,
+  radioGroup,
   select,
   submenu,
   table,
@@ -20,11 +23,14 @@ import {
 } from 'element-ui'
 
 Vue.use(button)
+Vue.use(dialog)
 Vue.use(form)
 Vue.use(formItem)
 Vue.use(input)
 Vue.use(menu)
 Vue.use(menuItem)
+Vue.use(radio)
+Vue.use(radioGroup)
 Vue.use(select)
 Vue.use(submenu)
 Vue.use(table)

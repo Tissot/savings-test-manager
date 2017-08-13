@@ -5,7 +5,7 @@
 			:border="table.border"
 			:max-height="table.maxHeight"
 			:data="table.data"
-			@selection-change="emitSelectionChange"
+			@selection-change="selectionChange"
 		>
       <el-table-column :fixed="mediaQueryList.matches === true ? false : 'left'" type="selection" width="54" v-if="toolbar.deleteButton === true"></el-table-column> 
 			<el-table-column
@@ -16,23 +16,29 @@
 				:min-width="table.minWidth"
 			></el-table-column>
 			<el-table-column :fixed="mediaQueryList.matches === true ? false : 'right'" label="操作" width="147">
-				<template scope="scope">
-					<el-button type="text" icon="edit" @click="emitEditUser(scope)">編輯</el-button>
-					<el-button type="text" icon="delete2" @click="emitDeleteUser(scope)">刪除</el-button>
+				<template scope="data">
+					<el-button type="text" icon="edit" @click="editData(data.row)">編輯</el-button>
+					<el-button type="text" icon="delete2" @click="deleteData(data.row)">刪除</el-button>
 				</template>
 			</el-table-column>
 		</el-table>
 		<div class="toolbar">
 			<div>
-				<el-button type="primary" icon="plus" v-if="toolbar.addButton === true">添加用戶</el-button>
-				<el-button type="danger" :disabled="table.dataSelected.length === 0" icon="delete2" v-if="toolbar.deleteButton === true">刪除用戶</el-button>
+				<el-button type="primary" icon="plus" v-if="toolbar.addButton === true" @click="addData">添加</el-button>
+				<el-button type="danger" :disabled="table.dataSelected.length === 0" icon="delete2" v-if="toolbar.deleteButton === true">刪除</el-button>
 			</div>
-			<el-input placeholder="請輸入搜索内容" v-model="search.content" v-if="toolbar.searchBar === true">
-				<el-select v-model="search.type" slot="prepend" placeholder="類型">
+			<el-input placeholder="搜索内容" v-model="search.value" v-if="toolbar.searchBar === true">
+				<el-select v-model="search.type" slot="prepend" placeholder="搜索類型">
 					<el-option v-for="option of search.options" :key="option.value" :value="option.value" :label="option.label"></el-option>
 				</el-select>
 				<el-button slot="append" icon="search"></el-button>
 			</el-input>
+      <el-dialog :title="slotForms[0].title" :lock-scroll="false" :visible.sync="editDialogVisible">
+        <slot name="edit-form"></slot>
+      </el-dialog>
+      <el-dialog :title="slotForms[1].title" :lock-scroll="false" :visible.sync="addDialogVisible">
+        <slot name="add-form"></slot>
+      </el-dialog>
 		</div>
   </div>
 </template>
@@ -81,27 +87,52 @@
             }
           ],
           type: 0,
-          content: ''
+          value: ''
         } : {}
+      },
+      slotForms: {
+        required: true,
+        type: Array,
+        default: [
+          {
+            slot: '',
+            ref: '',
+            title: '',
+            model: {
+              mobilePhone: '',
+              name: '',
+              nickname: '',
+              sex: '',
+              group: ''
+            }
+          }
+        ]
       }
     },
     data () {
       return {
-        mediaQueryList: window.matchMedia(`(min-width: ${this.table.columnsFixedWidth}px)`)
+        mediaQueryList: window.matchMedia(`(min-width: ${this.table.columnsFixedWidth}px)`),
+        editDialogVisible: false,
+        addDialogVisible: false
       }
     },
     methods: {
       mediaQueryListChanged () {
         this.mediaQueryList = window.matchMedia(`(min-width: ${this.table.columnsFixedWidth}px)`)
       },
-      emitSelectionChange (dataSelected) {
+      selectionChange (dataSelected) {
         this.table.dataSelected = dataSelected
       },
-      emitEditUser (scope) {
-        this.$emit('edit-user', scope)
+      editData (row) {
+        // 此处应使用JSON对row这一对象进行深拷贝，否则在表单中更改值时会导致表格中的值跟着更改。
+        this.slotForms[0].model = JSON.parse(JSON.stringify(row))
+        this.editDialogVisible = true
       },
-      emitDeleteUser (scope) {
-        this.$emit('delete-user', scope)
+      deleteData (data) {
+        this.$emit('delete-data', data)
+      },
+      addData () {
+        this.addDialogVisible = true
       }
     },
     watch: {
@@ -112,7 +143,6 @@
     created () {
       this.mediaQueryList.addListener(this.mediaQueryListChanged)
       this.mediaQueryListChanged()
-      console.log(this.table.dataSelected.length)
     },
     mounted () {
       document.querySelector('.el-table__body-wrapper').style.overflowX = this.mediaQueryList.matches === true ? 'hidden' : 'auto'
@@ -134,10 +164,36 @@
     .toolbar {
       display: flex;
       justify-content: space-between;
+
+      .el-input-group__prepend {
+        background-color:  #fff;
+
+        .el-select .el-input {
+          width: 110px;
+        }
+      }
+
+      .el-input-group__append {
+        color: #fff;
+        background-color: #20a0ff;
+        border-color: #20a0ff;
+      }
     }
 
-    .el-button + .el-button {
-      margin-left: 12px;
+    .el-dialog {
+      width: 480px;
+      
+      .el-dialog__body {
+        padding: 28px 36px;
+
+        .el-select {
+          width: 100%;
+        }
+
+        .el-form-item__content {
+          margin-left: 80px;
+        }
+      }
     }
   }
 </style>
