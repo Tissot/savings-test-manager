@@ -16,10 +16,10 @@
           >
             <span class="sign-in-header">管理員登錄</span>
             <el-form-item prop="account" :rules="{ required: true, message: '請輸入管理員帳號', trigger: 'change' }">
-              <el-input size="large" placeholder="管理員帳號" v-model.trim="manager.account"></el-input>
+              <el-input size="large" placeholder="管理員帳號" :disabled="signingIn" v-model.trim="manager.account"></el-input>
             </el-form-item>
             <el-form-item prop="password" :rules="{ required: true, message: '請輸入密碼', trigger:'change' }">
-              <el-input type="password" size="large" placeholder="密碼" v-model="manager.password"></el-input>
+              <el-input type="password" size="large" placeholder="密碼" :disabled="signingIn" v-model="manager.password"></el-input>
             </el-form-item>    
             <el-button
               native-type="submit"
@@ -80,7 +80,6 @@
       },
       backgroundFadeOut () {
         this.toggleTogglingBackground()
-
         this.toggleBackgroundVisible()
       },
       signIn () {
@@ -88,34 +87,45 @@
           if (isValid === true) {
             this.signingIn = true
 
-            setTimeout(() => {
-              if (this.manager.account === 'manager' && this.manager.password === '123') {
-                this.$message({
-                  showClose: true,
-                  message: '登錄成功',
-                  type: 'success'
-                })
+            const response = (await this.$ajax({
+              method: 'post',
+              url: '/admin/signIn',
+              data: this.manager
+            })).data
 
-                this.$router.push('/manager')
-              } else {
-                this.signingIn = false
+            this.$message({
+              showClose: true,
+              message: response.message,
+              type: response.statusCode === 100 ? 'success' : 'error'
+            })
 
-                this.$message({
-                  showClose: true,
-                  message: '密碼錯誤',
-                  type: 'error'
-                })
-              }
-            }, 1000)
+            if (response.statusCode === 100) {
+              localStorage.setItem('managerToken', response.result)
+              this.$router.push('/manager')
+            } else {
+              this.signingIn = false
+            }
           }
         })
       }
     },
+    beforeRouteEnter (to, from, next) {
+      let managerToken = localStorage.getItem('managerToken')
+
+      if (managerToken) {
+        if (managerToken !== '') {
+          next('/manager')
+        } else {
+          next()
+        }
+      } else {
+        localStorage.setItem('managerToken', '')
+        next()
+      }
+    },
     created () {
       this.background.num = Math.floor(Math.random() * this.background.size)
-
       this.indexVisible = true
-
       this.signInFormVisible = true
     }
   }

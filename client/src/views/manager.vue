@@ -33,15 +33,40 @@
       }
     },
     methods: {
-      signOut () {
+      async signOut () {
+        const response = (await this.$ajax({
+          method: 'post',
+          url: '/admin/signOut'
+        })).data
+
         this.$message({
           showClose: true,
-          message: '登出成功',
-          type: 'success'
+          message: response.message,
+          type: response.statusCode === 101 ? 'success' : 'error'
         })
 
-        this.$router.push('/')
+        if (response.statusCode === 101) {
+          localStorage.setItem('managerToken', '')
+          this.$store.commit('setManagerToken', '')
+          this.$router.push('/')
+        }
       }
+    },
+    beforeRouteEnter (to, from, next) {
+      let managerToken = localStorage.getItem('managerToken')
+
+      if (managerToken) {
+        if (managerToken !== '') {
+          next()
+        } else {
+          next('/')
+        }
+      } else {
+        next('/')
+      }
+    },
+    created () {
+      this.$store.commit('setManagerToken', localStorage.getItem('managerToken'))
     }
   }
 </script>
