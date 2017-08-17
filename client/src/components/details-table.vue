@@ -1,37 +1,21 @@
 <template>
   <div class="details-table">
-		<el-table
-      :ref="table.ref"
-			:border="table.border"
-			:max-height="table.maxHeight"
-			:data="table.data"
-			@selection-change="selectionChange"
-		>
-      <el-table-column :fixed="mediaQueryList.matches === true ? false : 'left'" type="selection" width="54" v-if="toolbar.deleteButton === true"></el-table-column> 
-			<el-table-column
-				v-for="table of table.columns"
-				:key="table.prop"
-				:prop="table.prop"
-				:label="table.label"
-				:min-width="table.minWidth"
-			></el-table-column>
-			<el-table-column :fixed="mediaQueryList.matches === true ? false : 'right'" label="操作" width="147">
-				<template scope="data">
-					<el-button type="text" icon="edit" @click="editData(data.row)">編輯</el-button>
-					<el-button type="text" icon="delete2" @click="deleteData(data.row)">刪除</el-button>
-				</template>
-			</el-table-column>
-		</el-table>
-		<div class="toolbar">
+    <div class="toolbar">
 			<div>
 				<el-button type="primary" icon="plus" v-if="toolbar.addButton === true" @click="addData">添加</el-button>
-				<el-button type="danger" :disabled="table.dataSelected.length === 0" icon="delete2" v-if="toolbar.deleteButton === true">刪除</el-button>
+				<el-button
+          type="danger"
+          :disabled="dataSelected.length === 0"
+          icon="delete2"
+          v-if="toolbar.deleteButton === true"
+          @click="deleteData(dataSelected)"
+        >刪除</el-button>
 			</div>
-			<el-input placeholder="搜索内容" v-model="search.value" v-if="toolbar.searchBar === true">
+			<el-input placeholder="搜索内容" v-model="search.value" v-if="toolbar.searchBar === true" @keyup.native.enter="searchData">
 				<el-select v-model="search.type" slot="prepend" placeholder="搜索類型">
-					<el-option v-for="option of search.options" :key="option.value" :value="option.value" :label="option.label"></el-option>
+					<el-option v-for="(typeOption, index) of search.typeOptions" :key="index" :value="index" :label="typeOption"></el-option>
 				</el-select>
-				<el-button slot="append" icon="search"></el-button>
+				<el-button slot="append" icon="search" @click="searchData"></el-button>
 			</el-input>
       <el-dialog :title="slotForms[0].title" :lock-scroll="false" :visible.sync="editDialogVisible">
         <slot name="edit-form"></slot>
@@ -40,6 +24,42 @@
         <slot name="add-form"></slot>
       </el-dialog>
 		</div>
+    <div :style="tableStyle">
+      <el-table
+        :ref="table.ref"
+        :border="table.border"
+        :max-height="table.maxHeight"
+        :data="table.data"
+        :empty-text="table.emptyText"
+        @selection-change="selectionChange"
+      >
+        <el-table-column :fixed="mediaQueryList.matches === true ? false : 'left'" type="selection" width="54" v-if="toolbar.deleteButton === true"></el-table-column> 
+        <el-table-column
+          v-for="table of table.columns"
+          :key="table.prop"
+          :prop="table.prop"
+          :label="table.label"
+          :min-width="table.minWidth"
+          :resizable="table.resizable"
+          :formatter="table.formatter"
+        ></el-table-column>
+        <el-table-column :fixed="mediaQueryList.matches === true ? false : 'right'" label="操作" width="147" :resizable="false">
+          <template scope="data">
+            <el-button type="text" icon="edit" @click="editData(data.row)">編輯</el-button>
+            <el-button type="text" icon="delete2" @click="deleteData([data.row._id])">刪除</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+    </div>
+    <el-pagination
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="table.count"
+      :page-size.sync="table.pageSize"
+      :current-page.sync="table.currentPage"
+      v-if="table.data.length !== 0"
+      @current-change="currentChange"
+      @size-change="sizeChange"
+    ></el-pagination>
   </div>
 </template>
 
@@ -47,26 +67,6 @@
   export default {
     name: 'details-table',
     props: {
-      table: {
-        required: true,
-        type: Object,
-        default: {
-          ref: '',
-          border: false,
-          maxHeight: '',
-          data: [],
-          dataSelected: [],
-          columns: [
-            {
-              prop: '',
-              label: '',
-              minWidth: ''
-            }
-          ],
-          rowOperation: false,
-          columnsFixedWidth: ''
-        }
-      },
       toolbar: {
         required: true,
         type: Object,
@@ -80,12 +80,7 @@
         required: this.searchBar,
         type: Object,
         default: toolbar.searchBar === true ? {
-          options: [
-            {
-              value: 0,
-              label: ''
-            }
-          ],
+          typeOptions: [],
           type: 0,
           value: ''
         } : {}
@@ -99,29 +94,58 @@
             ref: '',
             title: '',
             model: {
+              _id: '',
               mobilePhone: '',
               name: '',
               nickname: '',
-              sex: '',
+              gender: '',
               group: ''
             }
           }
         ]
+      },
+      table: {
+        required: true,
+        type: Object,
+        emptyText: '暫無數據',
+        startNum: 0,
+        pageSize: 20,
+        default: {
+          ref: '',
+          border: false,
+          maxHeight: '',
+          currentPage: 1,
+          pageSize: 10,
+          count: 0,
+          data: [],
+          columns: [
+            {
+              prop: '',
+              label: '',
+              minWidth: '',
+              resizable: false
+            }
+          ],
+          rowOperation: false,
+          columnsFixedWidth: ''
+        }
       }
     },
     data () {
       return {
         mediaQueryList: window.matchMedia(`(min-width: ${this.table.columnsFixedWidth}px)`),
+        tableStyle: {
+          height: `${this.table.maxHeight}px`,
+          margin: '16px 0'
+        },
         editDialogVisible: false,
-        addDialogVisible: false
+        addDialogVisible: false,
+        dataSelected: []
       }
     },
     methods: {
       mediaQueryListChanged () {
         this.mediaQueryList = window.matchMedia(`(min-width: ${this.table.columnsFixedWidth}px)`)
-      },
-      selectionChange (dataSelected) {
-        this.table.dataSelected = dataSelected
       },
       editData (row) {
         // 此处应使用JSON对row这一对象进行深拷贝，否则在表单中更改值时会导致表格中的值跟着更改。
@@ -133,6 +157,22 @@
       },
       addData () {
         this.addDialogVisible = true
+      },
+      searchData () {
+        this.$emit('search-data')
+      },
+      selectionChange (selection) {
+        this.dataSelected = []
+        selection.forEach((element) => {
+          this.dataSelected.push(element._id)
+        })
+      },
+      currentChange (currentPage) {
+        this.$emit('current-change')
+      },
+      sizeChange (size) {
+        this.table.pageSize = size
+        this.$emit('size-change')
       }
     },
     watch: {
@@ -154,13 +194,7 @@
 </script>
 
 <style lang="less">
-  .details-table {
-		.el-table {
-      .el-button + .el-button {
-        color: #ff4949;
-      }
-    }
-
+  .details-table {  
     .toolbar {
       display: flex;
       justify-content: space-between;
@@ -178,22 +212,35 @@
         background-color: #20a0ff;
         border-color: #20a0ff;
       }
-    }
 
-    .el-dialog {
-      width: 480px;
-      
-      .el-dialog__body {
-        padding: 28px 36px;
+      .el-dialog {
+        width: 480px;
+        
+        .el-dialog__body {
+          padding: 28px 36px;
 
-        .el-select {
-          width: 100%;
-        }
+          .el-select {
+            width: 100%;
+          }
 
-        .el-form-item__content {
-          margin-left: 80px;
+          .el-form-item:last-child {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 0;
+          }
         }
       }
+    }
+
+		.el-table {
+      .el-button + .el-button {
+        color: #ff4949;
+      }
+    }
+
+    .el-pagination {
+      display: flex;
+      justify-content: center;
     }
   }
 </style>

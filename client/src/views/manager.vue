@@ -13,7 +13,7 @@
         </el-menu>
       </div>
       <div class="sign-out-container">
-        <el-button type="danger" size="large" @click="signOut">退出登錄</el-button>
+        <el-button type="danger" size="large" :loading="signingOut" @click="signOut">{{ signingOut === true ? '正在退出' : '退出登錄' }}</el-button>
       </div>
     </nav>
     <section>
@@ -27,6 +27,11 @@
 <script>
   export default {
     name: 'manager',
+    data () {
+      return {
+        signingOut: false
+      }
+    },
     computed: {
       activeName () {
         return this.$route.path
@@ -34,6 +39,8 @@
     },
     methods: {
       async signOut () {
+        this.signingOut = true
+
         const response = (await this.$ajax({
           method: 'post',
           url: '/admin/signOut'
@@ -42,14 +49,13 @@
         this.$message({
           showClose: true,
           message: response.message,
-          type: response.statusCode === 101 ? 'success' : 'error'
+          type: response.statusCode === 100 ? 'success' : 'error'
         })
 
-        if (response.statusCode === 101) {
-          localStorage.setItem('managerToken', '')
-          this.$store.commit('setManagerToken', '')
-          this.$router.push('/')
-        }
+        localStorage.setItem('managerToken', '')
+        this.$store.commit('setManagerToken', '')
+        this.$router.push('/')
+        this.signingOut = false
       }
     },
     beforeRouteEnter (to, from, next) {

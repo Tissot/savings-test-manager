@@ -11,6 +11,7 @@ import {
   menu,
   menuItem,
   message,
+  messageBox,
   radio,
   radioGroup,
   select,
@@ -19,7 +20,8 @@ import {
   tableColumn,
   tabPane,
   tabs,
-  option
+  option,
+  pagination
 } from 'element-ui'
 
 Vue.use(button)
@@ -38,8 +40,10 @@ Vue.use(tableColumn)
 Vue.use(tabPane)
 Vue.use(tabs)
 Vue.use(option)
+Vue.use(pagination)
 
 Vue.prototype.$message = message
+Vue.prototype.$confirm = messageBox.confirm
 
 import lang from 'element-ui/lib/locale/lang/zh-TW'
 import locale from 'element-ui/lib/locale'
