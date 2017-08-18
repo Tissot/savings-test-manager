@@ -23,13 +23,13 @@
           @submit.native.prevent
         >
           <el-form-item label="用戶手機" prop="mobilePhone" :rules="{ required: true, message: '請輸入用戶手機', trigger: 'change' }">
-            <el-input placeholder="請輸入用戶手機" v-model="slotForms[0].model.mobilePhone"></el-input>
+            <el-input placeholder="請輸入用戶手機" v-model.trim="slotForms[0].model.mobilePhone"></el-input>
           </el-form-item>
           <el-form-item label="用戶姓名" prop="name" :rules="{ required: true, message: '請輸入用戶姓名', trigger: 'change' }">
-            <el-input placeholder="請輸入用戶姓名" v-model="slotForms[0].model.name"></el-input>
+            <el-input placeholder="請輸入用戶姓名" v-model.trim="slotForms[0].model.name"></el-input>
           </el-form-item>
           <el-form-item label="用戶昵稱" prop="nickname" :rules="{ required: true, message: '請輸入用戶昵稱', trigger: 'change' }">
-            <el-input placeholder="請輸入用戶昵稱" v-model="slotForms[0].model.nickname"></el-input>
+            <el-input placeholder="請輸入用戶昵稱" v-model.trim="slotForms[0].model.nickname"></el-input>
           </el-form-item>
           <el-form-item label="用戶性別" prop="gender" :rules="{ required: true, type: 'number', message: '請選擇用戶性別', trigger: 'change' }">
             <el-radio-group v-model="slotForms[0].model.gender">
@@ -53,13 +53,13 @@
           @submit.native.prevent
         >
           <el-form-item label="用戶手機" prop="mobilePhone" :rules="{ required: true, message: '請輸入用戶手機', trigger: 'change' }">
-            <el-input placeholder="請輸入用戶手機" v-model="slotForms[1].model.mobilePhone"></el-input>
+            <el-input placeholder="請輸入用戶手機" v-model.trim="slotForms[1].model.mobilePhone"></el-input>
           </el-form-item>
           <el-form-item label="用戶姓名" prop="name" :rules="{ required: true, message: '請輸入用戶姓名', trigger: 'change' }">
-            <el-input placeholder="請輸入用戶姓名" v-model="slotForms[1].model.name"></el-input>
+            <el-input placeholder="請輸入用戶姓名" v-model.trim="slotForms[1].model.name"></el-input>
           </el-form-item>
           <el-form-item label="用戶昵稱" prop="nickname" :rules="{ required: true, message: '請輸入用戶昵稱', trigger: 'change' }">
-            <el-input placeholder="請輸入用戶昵稱" v-model="slotForms[1].model.nickname"></el-input>
+            <el-input placeholder="請輸入用戶昵稱" v-model.trim="slotForms[1].model.nickname"></el-input>
           </el-form-item>
           <el-form-item label="用戶性別" prop="gender" :rules="{ required: true, type: 'number', message: '請選擇用戶性別', trigger: 'change' }">
             <el-radio-group v-model="slotForms[1].model.gender">
