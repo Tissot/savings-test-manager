@@ -1,13 +1,12 @@
 <template>
   <div class="details-table">
     <div class="toolbar">
-			<div>
-				<el-button type="primary" icon="plus" v-if="toolbar.addButton === true" @click="addData">添加</el-button>
+			<div v-if="toolbar.dataOperation === true">
+				<el-button type="primary" icon="plus" @click="addData">添加</el-button>
 				<el-button
           type="danger"
           :disabled="dataSelected.length === 0"
           icon="delete2"
-          v-if="toolbar.deleteButton === true"
           @click="deleteData(dataSelected)"
         >刪除</el-button>
 			</div>
@@ -33,7 +32,7 @@
         :empty-text="table.emptyText"
         @selection-change="selectionChange"
       >
-        <el-table-column :fixed="mediaQueryList.matches === true ? false : 'left'" type="selection" width="54" v-if="toolbar.deleteButton === true"></el-table-column> 
+        <el-table-column :fixed="mediaQueryList.matches === true ? false : 'left'" type="selection" width="54" v-if="toolbar.dataOperation === true"></el-table-column> 
         <el-table-column
           v-for="table of table.columns"
           :key="table.prop"
@@ -54,7 +53,8 @@
     <el-pagination
       layout="total, sizes, prev, pager, next, jumper"
       :total="table.count"
-      :page-size.sync="table.pageSize"
+      :page-size="table.pageSize"
+      :page-sizes="[15, 20, 30, 40, 50]"
       :current-page.sync="table.currentPage"
       v-if="table.data.length !== 0"
       @current-change="currentChange"
@@ -71,19 +71,17 @@
         required: true,
         type: Object,
         default: {
-          addButton: false,
-          deleteButton: false,
+          dataOperation: false,
           searchBar: false
         }
       },
       search: {
-        required: this.searchBar,
         type: Object,
-        default: toolbar.searchBar === true ? {
+        default: {
           typeOptions: [],
           type: 0,
           value: ''
-        } : {}
+        }
       },
       slotForms: {
         required: true,
@@ -109,7 +107,7 @@
         type: Object,
         emptyText: '暫無數據',
         startNum: 0,
-        pageSize: 20,
+        pageSize: 15,
         default: {
           ref: '',
           border: false,
@@ -125,15 +123,14 @@
               minWidth: '',
               resizable: false
             }
-          ],
-          rowOperation: false,
-          columnsFixedWidth: ''
+          ]
         }
       }
     },
     data () {
       return {
-        mediaQueryList: window.matchMedia(`(min-width: ${this.table.columnsFixedWidth}px)`),
+        columnsFixedWidth: 0,
+        mediaQueryList: '',
         tableStyle: {
           height: `${this.table.maxHeight}px`,
           margin: '16px 0'
@@ -144,8 +141,25 @@
       }
     },
     methods: {
+      initColumnsFixedWidth () {
+        return new Promise((resolve, reject) => {
+          this.columnsFixedWidth = this.table.columns.reduce((result, element) => {
+            return result + Number(element.minWidth)
+          }, this.toolbar.dataOperation ? 482 : 281)
+          resolve()
+        })
+      },
+      listenMediaQueryList () {
+        return new Promise((resolve, reject) => {
+          this.mediaQueryList = window.matchMedia(`(min-width: ${this.columnsFixedWidth}px)`)
+          this.mediaQueryList.addListener(this.mediaQueryListChanged)
+          this.mediaQueryListChanged()
+          resolve()
+        })
+      },
       mediaQueryListChanged () {
-        this.mediaQueryList = window.matchMedia(`(min-width: ${this.table.columnsFixedWidth}px)`)
+        this.mediaQueryList = window.matchMedia(`(min-width: ${this.columnsFixedWidth}px)`)
+        document.querySelector('.el-table__body-wrapper').style.overflowX = this.mediaQueryList.matches === true ? 'hidden' : 'auto'
       },
       editData (row) {
         // 此处应使用JSON对row这一对象进行深拷贝，否则在表单中更改值时会导致表格中的值跟着更改。
@@ -175,17 +189,12 @@
         this.$emit('size-change')
       }
     },
-    watch: {
-      'mediaQueryList.matches' (newValue) {
-        document.querySelector('.el-table__body-wrapper').style.overflowX = newValue === true ? 'hidden' : 'auto'
-      }
-    },
-    created () {
-      this.mediaQueryList.addListener(this.mediaQueryListChanged)
-      this.mediaQueryListChanged()
+    async created () {
+      await this.initColumnsFixedWidth()
+      await this.listenMediaQueryList()
+      document.querySelector('.el-table__body-wrapper').style.overflowX = this.mediaQueryList.matches === true ? 'hidden' : 'auto'
     },
     mounted () {
-      document.querySelector('.el-table__body-wrapper').style.overflowX = this.mediaQueryList.matches === true ? 'hidden' : 'auto'
     },
     destroyed () {
       this.mediaQueryList.removeListener(this.mediaQueryListChanged)

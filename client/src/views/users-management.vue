@@ -94,6 +94,10 @@
         activeName: window.sessionStorage.getItem('usersManagementActiveName'),
         genders: ['男', '女'],
         groups: ['Peer Support 組', 'Earmarking Saving 組', '雙重干預組', '空白對照組'],
+        toolbar: {
+          dataOperation: true,
+          searchBar: true
+        },
         search: {
           typeOptions: ['手機', '姓名'],
           type: '',
@@ -132,7 +136,7 @@
           maxHeight: '443',
           emptyText: '暫無用戶',
           currentPage: 1,
-          pageSize: 10,
+          pageSize: 15,
           count: 0,
           data: [
             // 数据结构如下：
@@ -184,14 +188,7 @@
                 return groups[cellValue]
               }
             }
-          ],
-          rowOperation: true,
-          columnsFixedWidth: '1252'
-        },
-        toolbar: {
-          addButton: true,
-          deleteButton: true,
-          searchBar: true
+          ]
         }
       }
     },
@@ -206,12 +203,11 @@
         if (this.activeName === null) {
           this.initActiveName()
         } else {
-          this.groups.every((element) => {
+          this.groups.some((element) => {
             if (this.activeName === element) {
               activeNameExited = true
-              return false
+              return true
             }
-            return true
           })
 
           if (activeNameExited === false) {
