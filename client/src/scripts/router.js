@@ -7,7 +7,7 @@ import index from '../views/index'
 import manager from '../views/manager'
 import welcome from '../views/welcome'
 import usersManagement from '../views/users-management'
-import onlineContentLinksManagement from '../views/online-content-links-management'
+import onlineContentsManagement from '../views/online-contents-management'
 import questionsManagement from '../views/questions-management'
 import messagesManagement from '../views/messages-management'
 import savingsSituation from '../views/savings-situation'
@@ -24,7 +24,7 @@ export default new VueRouter({
       children: [
         { path: '/', component: welcome },
         { path: 'users-management', component: usersManagement },
-        { path: 'online-content-links-management', component: onlineContentLinksManagement },
+        { path: 'online-contents-management', component: onlineContentsManagement },
         { path: 'questions-management', component: questionsManagement },
         { path: 'messages-management', component: messagesManagement },
         { path: 'savings-situation', component: savingsSituation },
