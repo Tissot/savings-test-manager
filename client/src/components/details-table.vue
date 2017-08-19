@@ -10,17 +10,17 @@
           @click="deleteData(dataSelected)"
         >刪除</el-button>
 			</div>
-			<el-input placeholder="搜索内容" v-model="search.value" v-if="toolbar.searchBar === true" @keyup.native.enter="searchData">
+			<el-input placeholder="搜索内容" v-model.trim="search.value" v-if="toolbar.searchBar === true" @keyup.native.enter="searchData">
 				<el-select v-model="search.type" slot="prepend" placeholder="搜索類型">
 					<el-option v-for="(typeOption, index) of search.typeOptions" :key="index" :value="index" :label="typeOption"></el-option>
 				</el-select>
 				<el-button slot="append" icon="search" @click="searchData"></el-button>
 			</el-input>
-      <el-dialog :title="slotForms[0].title" :lock-scroll="false" :visible.sync="editDialogVisible">
-        <slot name="edit-form"></slot>
-      </el-dialog>
-      <el-dialog :title="slotForms[1].title" :lock-scroll="false" :visible.sync="addDialogVisible">
+      <el-dialog :title="slotForms[0].title" :lock-scroll="false" :visible.sync="addDialogVisible">
         <slot name="add-form"></slot>
+      </el-dialog>
+      <el-dialog :title="slotForms[1].title" :lock-scroll="false" :visible.sync="editDialogVisible">
+        <slot name="edit-form"></slot>
       </el-dialog>
 		</div>
     <div :style="tableStyle">
@@ -42,7 +42,7 @@
           :resizable="table.resizable"
           :formatter="table.formatter"
         ></el-table-column>
-        <el-table-column :fixed="mediaQueryList.matches === true ? false : 'right'" label="操作" width="147" :resizable="false">
+        <el-table-column :fixed="mediaQueryList.matches === true ? false : 'right'" label="操作" width="147" :resizable="false" v-if="toolbar.dataOperation === true">
           <template scope="data">
             <el-button type="text" icon="edit" @click="editData(data.row)">編輯</el-button>
             <el-button type="text" icon="delete2" @click="deleteData([data.row._id])">刪除</el-button>
@@ -56,7 +56,7 @@
       :page-size="table.pageSize"
       :page-sizes="[15, 20, 30, 40, 50]"
       :current-page.sync="table.currentPage"
-      v-if="table.data.length !== 0"
+      v-if="table.count > 0 && toolbar.pagination === true"
       @current-change="currentChange"
       @size-change="sizeChange"
     ></el-pagination>
@@ -70,37 +70,44 @@
       toolbar: {
         required: true,
         type: Object,
-        default: {
-          dataOperation: false,
-          searchBar: false
+        default () {
+          return {
+            dataOperation: false,
+            searchBar: false,
+            pagination: false
+          }
         }
       },
       search: {
         type: Object,
-        default: {
-          typeOptions: [],
-          type: 0,
-          value: ''
+        default () {
+          return {
+            typeOptions: [],
+            type: 0,
+            value: ''
+          }
         }
       },
       slotForms: {
         required: true,
         type: Array,
-        default: [
-          {
-            slot: '',
-            ref: '',
-            title: '',
-            model: {
-              _id: '',
-              mobilePhone: '',
-              name: '',
-              nickname: '',
-              gender: '',
-              group: ''
+        default () {
+          return [
+            {
+              slot: '',
+              ref: '',
+              title: '',
+              model: {
+                _id: '',
+                mobilePhone: '',
+                name: '',
+                nickname: '',
+                gender: '',
+                group: ''
+              }
             }
-          }
-        ]
+          ]
+        }
       },
       table: {
         required: true,
@@ -108,22 +115,24 @@
         emptyText: '暫無數據',
         startNum: 0,
         pageSize: 15,
-        default: {
-          ref: '',
-          border: false,
-          maxHeight: '',
-          currentPage: 1,
-          pageSize: 10,
-          count: 0,
-          data: [],
-          columns: [
-            {
-              prop: '',
-              label: '',
-              minWidth: '',
-              resizable: false
-            }
-          ]
+        default () {
+          return {
+            ref: '',
+            border: false,
+            maxHeight: '',
+            currentPage: 1,
+            pageSize: 10,
+            count: 0,
+            data: [],
+            columns: [
+              {
+                prop: '',
+                label: '',
+                minWidth: '',
+                resizable: false
+              }
+            ]
+          }
         }
       }
     },
@@ -163,7 +172,7 @@
       },
       editData (row) {
         // 此处应使用JSON对row这一对象进行深拷贝，否则在表单中更改值时会导致表格中的值跟着更改。
-        this.slotForms[0].model = JSON.parse(JSON.stringify(row))
+        this.slotForms[1].model = JSON.parse(JSON.stringify(row))
         this.editDialogVisible = true
       },
       deleteData (data) {
