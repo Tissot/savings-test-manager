@@ -41,9 +41,10 @@
               <el-option v-for="(group, index) in groups" :key="index" :value="index" :label="group"></el-option>
             </el-select>
           </el-form-item>
-           <el-form-item>
+          <el-form-item>
+            <el-button @click="resetForm(slotForms[0].ref)">重置</el-button>
             <el-button native-type="submit" type="primary" @click="updateUser(slotForms[0])">確定</el-button>
-          </el-form-item> 
+          </el-form-item>
         </el-form>
         <el-form
           :ref="slotForms[1].ref"
@@ -71,10 +72,9 @@
               <el-option v-for="(group, index) in groups" :key="index" :value="index" :label="group"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item>
-            <el-button @click="resetForm(slotForms[1].ref)">重置</el-button>
+           <el-form-item>
             <el-button native-type="submit" type="primary" @click="updateUser(slotForms[1])">確定</el-button>
-          </el-form-item>
+          </el-form-item> 
         </el-form>
       </details-table>
     </el-tabs>
@@ -96,7 +96,8 @@
         groups: ['Peer Support 組', 'Earmarking Saving 組', '雙重干預組', '空白對照組'],
         toolbar: {
           dataOperation: true,
-          searchBar: true
+          searchBar: true,
+          pagination: true
         },
         search: {
           typeOptions: ['手機', '姓名'],
@@ -105,11 +106,10 @@
         },
         slotForms: [
           {
-            slot: 'edit-form',
-            ref: 'editUser',
-            title: '編輯用戶',
+            slot: 'add-form',
+            ref: 'addUser',
+            title: '添加用戶',
             model: {
-              _id: '',
               mobilePhone: '',
               name: '',
               nickname: '',
@@ -118,10 +118,11 @@
             }
           },
           {
-            slot: 'add-form',
-            ref: 'addUser',
-            title: '添加用戶',
+            slot: 'edit-form',
+            ref: 'editUser',
+            title: '編輯用戶',
             model: {
+              _id: '',
               mobilePhone: '',
               name: '',
               nickname: '',
@@ -198,21 +199,19 @@
         this.activeName = window.sessionStorage.getItem('usersManagementActiveName')
       },
       checkActiveName () {
-        let activeNameExited = false
-
         if (this.activeName === null) {
           this.initActiveName()
+        } else if (this.activeName === '搜索結果') {
+          this.initActiveName()
+          this.searchUsers(JSON.parse(window.sessionStorage.getItem('usersManagementSearch')))
         } else {
           this.groups.some((element) => {
             if (this.activeName === element) {
-              activeNameExited = true
+              this.initActiveName()
+              this.getUsers()
               return true
             }
           })
-
-          if (activeNameExited === false) {
-            this.initActiveName()
-          }
         }
       },
       async getUsers () {
@@ -256,10 +255,10 @@
             })
 
             if (response.statusCode === 100) {
-              if (this.groups.indexOf(this.activeName) === -1) {
-                this.searchUsers(JSON.parse(window.sessionStorage.getItem('usersManagementSearch')))
-              } else {
+              if (this.groups.indexOf(this.activeName) !== -1) {
                 this.getUsers()
+              } else if (this.activeName === '搜索結果') {
+                this.searchUsers(JSON.parse(window.sessionStorage.getItem('usersManagementSearch')))
               }
             }
           }
@@ -285,10 +284,10 @@
             })
 
             if (response.statusCode === 100) {
-              if (this.groups.indexOf(this.activeName) === -1) {
-                this.searchUsers(JSON.parse(window.sessionStorage.getItem('usersManagementSearch')))
-              } else {
+              if (this.groups.indexOf(this.activeName) !== -1) {
                 this.getUsers()
+              } else if (this.activeName === '搜索結果') {
+                this.searchUsers(JSON.parse(window.sessionStorage.getItem('usersManagementSearch')))
               }
             }
           }
@@ -296,7 +295,10 @@
         }
       },
       async searchUsers (searchObject) {
-        if (!searchObject) {
+        if (searchObject !== undefined) {
+          this.search.type = searchObject.type
+          this.search.value = searchObject.value
+        } else {
           if (this.search.type === '') {
             this.$message({
               showClose: true,
@@ -316,21 +318,24 @@
           } else {
             window.sessionStorage.setItem('usersManagementSearch', JSON.stringify({
               type: this.search.type,
-              content: this.search.value
+              value: this.search.value
             }))
           }
         }
         this.activeName = '搜索結果'
+        window.sessionStorage.setItem('usersManagementActiveName', this.activeName)
 
         const response = (await this.$ajax({
           method: 'post',
           url: '/user/searchUsers',
-          // 此处应使用JSON并非用于深拷贝，只是为了避免语法错误（直接写searchObject会报错）。
-          data: searchObject ? JSON.parse(JSON.stringify(searchObject)) : {
+          data: {
             type: this.search.type,
             content: this.search.value
           }
         })).data
+
+        // 此处令count为-1是为了不渲染分页组件
+        this.table.count = -1
 
         if (response.statusCode === 100) {
           this.table.data = response.result
@@ -344,7 +349,6 @@
     },
     created () {
       this.checkActiveName()
-      this.getUsers()
     }
   }
 </script>
