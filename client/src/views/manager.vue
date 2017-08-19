@@ -5,7 +5,7 @@
         <h1 @click="$router.push('/manager')">儲蓄實驗後台管理系統</h1>
         <el-menu :default-active="activeName" :router="true">
           <el-menu-item index="/manager/users-management">用戶管理</el-menu-item>
-          <el-menu-item index="/manager/online-content-links-management">在線內容鏈接管理</el-menu-item>
+          <el-menu-item index="/manager/online-contents-management">在線內容管理</el-menu-item>
           <el-menu-item index="/manager/questions-management">試題管理</el-menu-item>
           <el-menu-item index="/manager/messages-management">消息管理</el-menu-item>
           <el-menu-item index="/manager/savings-situation">儲蓄情況</el-menu-item>
