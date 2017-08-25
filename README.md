@@ -1,6 +1,6 @@
 # savings-test-manager
 
-> A manager system for the savings test based on vue.js.
+> A manager system for the savings test based on Vue.js.
 
 ## Build Setup
 
