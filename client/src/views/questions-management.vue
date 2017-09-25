@@ -85,7 +85,6 @@
             <el-button native-type="submit" type="primary" @click="updateQuestions(slotForms[1])">確定</el-button>
           </el-form-item> 
         </el-form>
-        
       </details-table>
     </el-tabs>
   </div>

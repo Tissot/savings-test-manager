@@ -203,8 +203,6 @@
       await this.listenMediaQueryList()
       document.querySelector('.el-table__body-wrapper').style.overflowX = this.mediaQueryList.matches === true ? 'hidden' : 'auto'
     },
-    mounted () {
-    },
     destroyed () {
       this.mediaQueryList.removeListener(this.mediaQueryListChanged)
     }

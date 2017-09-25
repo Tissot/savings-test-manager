@@ -125,6 +125,8 @@
     },
     created () {
       this.background.num = Math.floor(Math.random() * this.background.size)
+    },
+    mounted () {
       this.indexVisible = true
       this.signInFormVisible = true
     }
