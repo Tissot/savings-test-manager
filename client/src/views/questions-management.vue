@@ -22,17 +22,17 @@
           <el-form-item label="試題標題" prop="question" :rules="{ required: true, message: '請輸入試題標題', trigger: 'change' }">
             <el-input placeholder="請輸入試題標題" v-model.trim="slotForms[0].model.question"></el-input>
           </el-form-item>
-          <el-form-item label="選項A" prop="options[0]" :rules="{ required: true, message: '請輸入選項A的内容', trigger: 'change' }">
-            <el-input placeholder="請輸入選項A的内容" v-model.trim="slotForms[0].model.options[0]"></el-input>
+          <el-form-item label="選項A" prop="options[0]" :rules="{ required: true, message: '請輸入選項A的內容', trigger: 'change' }">
+            <el-input placeholder="請輸入選項A的內容" v-model.trim="slotForms[0].model.options[0]"></el-input>
           </el-form-item>
-          <el-form-item label="選項B" prop="options[1]" :rules="{ required: true, message: '請輸入選項B的内容', trigger: 'change' }">
-            <el-input placeholder="請輸入選項B的内容" v-model.trim="slotForms[0].model.options[1]"></el-input>
+          <el-form-item label="選項B" prop="options[1]" :rules="{ required: true, message: '請輸入選項B的內容', trigger: 'change' }">
+            <el-input placeholder="請輸入選項B的內容" v-model.trim="slotForms[0].model.options[1]"></el-input>
           </el-form-item>
-          <el-form-item label="選項C" prop="options[2]" :rules="{ required: true, message: '請輸入選項C的内容', trigger: 'change' }">
-            <el-input placeholder="請輸入選項C的内容" v-model.trim="slotForms[0].model.options[2]"></el-input>
+          <el-form-item label="選項C" prop="options[2]" :rules="{ required: true, message: '請輸入選項C的內容', trigger: 'change' }">
+            <el-input placeholder="請輸入選項C的內容" v-model.trim="slotForms[0].model.options[2]"></el-input>
           </el-form-item>
-          <el-form-item label="選項D" prop="options[3]" :rules="{ required: true, message: '請輸入選項D的内容', trigger: 'change' }">
-            <el-input placeholder="請輸入選項D的内容" v-model.trim="slotForms[0].model.options[3]"></el-input>
+          <el-form-item label="選項D" prop="options[3]" :rules="{ required: true, message: '請輸入選項D的內容', trigger: 'change' }">
+            <el-input placeholder="請輸入選項D的內容" v-model.trim="slotForms[0].model.options[3]"></el-input>
           </el-form-item>
           <el-form-item label="試題答案" prop="answer" :rules="{ required: true, type: 'number', message: '請選擇試題答案', trigger: 'change' }">
             <el-radio-group v-model="slotForms[0].model.answer">
@@ -59,17 +59,17 @@
           <el-form-item label="試題標題" prop="question" :rules="{ required: true, message: '請輸入試題標題', trigger: 'change' }">
             <el-input placeholder="請輸入試題標題" v-model.trim="slotForms[1].model.question"></el-input>
           </el-form-item>
-          <el-form-item label="選項A" prop="options[0]" :rules="{ required: true, message: '請輸入選項A的内容', trigger: 'change' }">
-            <el-input placeholder="請輸入選項A的内容" v-model.trim="slotForms[1].model.options[0]"></el-input>
+          <el-form-item label="選項A" prop="options[0]" :rules="{ required: true, message: '請輸入選項A的內容', trigger: 'change' }">
+            <el-input placeholder="請輸入選項A的內容" v-model.trim="slotForms[1].model.options[0]"></el-input>
           </el-form-item>
-          <el-form-item label="選項B" prop="options[1]" :rules="{ required: true, message: '請輸入選項B的内容', trigger: 'change' }">
-            <el-input placeholder="請輸入選項B的内容" v-model.trim="slotForms[1].model.options[1]"></el-input>
+          <el-form-item label="選項B" prop="options[1]" :rules="{ required: true, message: '請輸入選項B的內容', trigger: 'change' }">
+            <el-input placeholder="請輸入選項B的內容" v-model.trim="slotForms[1].model.options[1]"></el-input>
           </el-form-item>
-          <el-form-item label="選項C" prop="options[2]" :rules="{ required: true, message: '請輸入選項C的内容', trigger: 'change' }">
-            <el-input placeholder="請輸入選項C的内容" v-model.trim="slotForms[1].model.options[2]"></el-input>
+          <el-form-item label="選項C" prop="options[2]" :rules="{ required: true, message: '請輸入選項C的內容', trigger: 'change' }">
+            <el-input placeholder="請輸入選項C的內容" v-model.trim="slotForms[1].model.options[2]"></el-input>
           </el-form-item>
-          <el-form-item label="選項D" prop="options[3]" :rules="{ required: true, message: '請輸入選項D的内容', trigger: 'change' }">
-            <el-input placeholder="請輸入選項D的内容" v-model.trim="slotForms[1].model.options[3]"></el-input>
+          <el-form-item label="選項D" prop="options[3]" :rules="{ required: true, message: '請輸入選項D的內容', trigger: 'change' }">
+            <el-input placeholder="請輸入選項D的內容" v-model.trim="slotForms[1].model.options[3]"></el-input>
           </el-form-item>
           <el-form-item label="試題答案" prop="answer" :rules="{ required: true, type: 'number', message: '請選擇試題答案', trigger: 'change' }">
             <el-radio-group v-model="slotForms[1].model.answer">

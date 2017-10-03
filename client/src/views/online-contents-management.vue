@@ -1,6 +1,6 @@
 <template>
   <div id="online-content-management">
-    <h2>在綫内容管理</h2>
+    <h2>在綫內容管理</h2>
     <el-tabs v-model="activeName" @tab-click="toggleGroup">
       <el-tab-pane v-for="group of groups" :key="group" :name="group" :label="group"></el-tab-pane>
       <details-table
@@ -19,19 +19,19 @@
           :model="slotForms[0].model"
           @submit.native.prevent
         >
-          <el-form-item label="内容標題" prop="title" :rules="{ required: true, message: '請輸入在綫内容標題', trigger: 'change' }">
-            <el-input placeholder="請輸入在綫内容標題" v-model.trim="slotForms[0].model.title"></el-input>
+          <el-form-item label="內容標題" prop="title" :rules="{ required: true, message: '請輸入在綫內容標題', trigger: 'change' }">
+            <el-input placeholder="請輸入在綫內容標題" v-model.trim="slotForms[0].model.title"></el-input>
           </el-form-item>
-          <el-form-item label="内容链接" prop="url" :rules="{ required: true, message: '請輸入在綫内容链接', trigger: 'change' }">
-            <el-input placeholder="請輸入在綫内容链接" v-model.trim="slotForms[0].model.url"></el-input>
+          <el-form-item label="內容链接" prop="url" :rules="{ required: true, message: '請輸入在綫內容链接', trigger: 'change' }">
+            <el-input placeholder="請輸入在綫內容链接" v-model.trim="slotForms[0].model.url"></el-input>
           </el-form-item>
-          <el-form-item label="内容类别" prop="type" :rules="{ required: true, type: 'number', message: '請選擇内容类别', trigger: 'change' }">
+          <el-form-item label="內容類型" prop="type" :rules="{ required: true, type: 'number', message: '請選擇內容類型', trigger: 'change' }">
             <el-radio-group v-model="slotForms[0].model.type">
               <el-radio v-for="(type, index) of types" :key="index" :label="index">{{ type }}</el-radio>
             </el-radio-group>
           </el-form-item>
-          <el-form-item label="内容分組" prop="group" :rules="{ required: true, type: 'number', message: '請選擇内容分組', trigger: 'change' }">
-            <el-select placeholder="请选择内容分組" v-model="slotForms[0].model.group">
+          <el-form-item label="內容分組" prop="group" :rules="{ required: true, type: 'number', message: '請選擇內容分組', trigger: 'change' }">
+            <el-select placeholder="请选择內容分組" v-model="slotForms[0].model.group">
               <el-option v-for="(group, index) in groups" :key="index" :value="index" :label="group"></el-option>
             </el-select>
           </el-form-item>
@@ -47,19 +47,19 @@
           :model="slotForms[1].model"
           @submit.native.prevent
         >
-          <el-form-item label="内容標題" prop="title" :rules="{ required: true, message: '請輸入在綫内容標題', trigger: 'change' }">
-            <el-input placeholder="請輸入在綫内容標題" v-model.trim="slotForms[1].model.title"></el-input>
+          <el-form-item label="內容標題" prop="title" :rules="{ required: true, message: '請輸入在綫內容標題', trigger: 'change' }">
+            <el-input placeholder="請輸入在綫內容標題" v-model.trim="slotForms[1].model.title"></el-input>
           </el-form-item>
-          <el-form-item label="内容链接" prop="url" :rules="{ required: true, message: '請輸入在綫内容链接', trigger: 'change' }">
-            <el-input placeholder="請輸入在綫内容链接" v-model.trim="slotForms[1].model.url"></el-input>
+          <el-form-item label="內容链接" prop="url" :rules="{ required: true, message: '請輸入在綫內容链接', trigger: 'change' }">
+            <el-input placeholder="請輸入在綫內容链接" v-model.trim="slotForms[1].model.url"></el-input>
           </el-form-item>
-          <el-form-item label="内容类别" prop="type" :rules="{ required: true, type: 'number', message: '請選擇内容类别', trigger: 'change' }">
+          <el-form-item label="內容類型" prop="type" :rules="{ required: true, type: 'number', message: '請選擇內容類型', trigger: 'change' }">
             <el-radio-group v-model="slotForms[1].model.type">
               <el-radio v-for="(type, index) of types" :key="index" :label="index">{{ type }}</el-radio>
             </el-radio-group>
           </el-form-item>
-          <el-form-item label="内容分組" prop="group" :rules="{ required: true, type: 'number', message: '請選擇内容分組', trigger: 'change' }">
-            <el-select placeholder="请选择内容分組" v-model="slotForms[1].model.group">
+          <el-form-item label="內容分組" prop="group" :rules="{ required: true, type: 'number', message: '請選擇內容分組', trigger: 'change' }">
+            <el-select placeholder="请选择內容分組" v-model="slotForms[1].model.group">
               <el-option v-for="(group, index) in groups" :key="index" :value="index" :label="group"></el-option>
             </el-select>
           </el-form-item>
@@ -94,7 +94,7 @@
           {
             slot: 'add-form',
             ref: 'addOnlineContent',
-            title: '添加在綫内容',
+            title: '添加在綫內容',
             model: {
               title: '',
               url: '',
@@ -105,7 +105,7 @@
           {
             slot: 'edit-form',
             ref: 'editOnlineContent',
-            title: '編輯在綫内容',
+            title: '編輯在綫內容',
             model: {
               _id: '',
               title: '',
@@ -119,7 +119,7 @@
           ref: 'onlineContentsTable',
           border: true,
           maxHeight: '443',
-          emptyText: '暫無在綫内容',
+          emptyText: '暫無在綫內容',
           currentPage: 1,
           pageSize: 15,
           data: [
@@ -147,7 +147,7 @@
             },
             {
               prop: 'type',
-              label: '类别',
+              label: '類型',
               minWidth: '70',
               resizable: false,
               formatter (row, column, cellValue) {
@@ -227,7 +227,7 @@
       },
       async deleteOnlineContents (onlineContents) {
         try {
-          const result = await this.$confirm(onlineContents.length === 1 ? '确定刪除該在綫内容？' : `确定刪除這${onlineContents.length}個在綫内容？`, '刪除在綫内容', {
+          const result = await this.$confirm(onlineContents.length === 1 ? '确定刪除該在綫內容？' : `确定刪除這${onlineContents.length}個在綫內容？`, '刪除在綫內容', {
             type: 'warning'
           })
 

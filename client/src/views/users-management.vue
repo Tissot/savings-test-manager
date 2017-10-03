@@ -310,7 +310,7 @@
           } else if (this.search.value === '') {
             this.$message({
               showClose: true,
-              message: '請輸入搜索内容',
+              message: '請輸入搜索內容',
               type: 'error'
             })
 
