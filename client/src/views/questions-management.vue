@@ -224,9 +224,7 @@
           method: 'post',
           url: '/question/getQuestions',
           data: {
-            group: this.groups.indexOf(this.activeName),
-            startNum: (this.table.currentPage - 1) * this.table.pageSize,
-            pageSize: this.table.pageSize
+            group: this.groups.indexOf(this.activeName)
           }
         })).data
 
