@@ -25,6 +25,11 @@
           <el-form-item label="内容链接" prop="url" :rules="{ required: true, message: '請輸入在綫内容链接', trigger: 'change' }">
             <el-input placeholder="請輸入在綫内容链接" v-model.trim="slotForms[0].model.url"></el-input>
           </el-form-item>
+          <el-form-item label="内容类别" prop="type" :rules="{ required: true, type: 'number', message: '請選擇内容类别', trigger: 'change' }">
+            <el-radio-group v-model="slotForms[0].model.type">
+              <el-radio v-for="(type, index) of types" :key="index" :label="index">{{ type }}</el-radio>
+            </el-radio-group>
+          </el-form-item>
           <el-form-item label="内容分組" prop="group" :rules="{ required: true, type: 'number', message: '請選擇内容分組', trigger: 'change' }">
             <el-select placeholder="请选择内容分組" v-model="slotForms[0].model.group">
               <el-option v-for="(group, index) in groups" :key="index" :value="index" :label="group"></el-option>
@@ -47,6 +52,11 @@
           </el-form-item>
           <el-form-item label="内容链接" prop="url" :rules="{ required: true, message: '請輸入在綫内容链接', trigger: 'change' }">
             <el-input placeholder="請輸入在綫内容链接" v-model.trim="slotForms[1].model.url"></el-input>
+          </el-form-item>
+          <el-form-item label="内容类别" prop="type" :rules="{ required: true, type: 'number', message: '請選擇内容类别', trigger: 'change' }">
+            <el-radio-group v-model="slotForms[1].model.type">
+              <el-radio v-for="(type, index) of types" :key="index" :label="index">{{ type }}</el-radio>
+            </el-radio-group>
           </el-form-item>
           <el-form-item label="内容分組" prop="group" :rules="{ required: true, type: 'number', message: '請選擇内容分組', trigger: 'change' }">
             <el-select placeholder="请选择内容分組" v-model="slotForms[1].model.group">
@@ -74,6 +84,7 @@
       return {
         activeName: window.sessionStorage.getItem('onlineContentsManagementActiveName'),
         groups: ['Peer Support 組', 'Earmarking Saving 組', '雙重干預組', '空白對照組'],
+        types: ['文档', '视频'],
         toolbar: {
           dataOperation: true,
           searchBar: false,
@@ -87,6 +98,7 @@
             model: {
               title: '',
               url: '',
+              type: -1,
               group: ''
             }
           },
@@ -98,6 +110,7 @@
               _id: '',
               title: '',
               url: '',
+              type: -1,
               group: ''
             }
           }
@@ -115,6 +128,7 @@
             //   _id: '',
             //   title: '',
             //   url: '',
+            //   type: -1,
             //   group: ''
             // }
           ],
@@ -130,6 +144,16 @@
               label: '鏈接',
               minWidth: '400',
               resizable: false
+            },
+            {
+              prop: 'type',
+              label: '类别',
+              minWidth: '70',
+              resizable: false,
+              formatter (row, column, cellValue) {
+                const types = ['文档', '视频']
+                return types[cellValue]
+              }
             }
           ]
         }
@@ -168,6 +192,7 @@
             pageSize: this.table.pageSize
           }
         })).data
+        console.log(response)
 
         if (response.statusCode === 100) {
           this.table.data = response.result.onlineContents
