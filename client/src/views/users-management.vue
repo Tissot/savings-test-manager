@@ -199,19 +199,24 @@
         this.activeName = window.sessionStorage.getItem('usersManagementActiveName')
       },
       checkActiveName () {
-        if (this.activeName === null) {
-          this.initActiveName()
-        } else if (this.activeName === '搜索結果') {
-          this.initActiveName()
+        let activeNameExited = false
+
+        if (this.activeName === '搜索結果') {
+          activeNameExited = true
           this.searchUsers(JSON.parse(window.sessionStorage.getItem('usersManagementSearch')))
         } else {
           this.groups.some((element) => {
             if (this.activeName === element) {
-              this.initActiveName()
+              activeNameExited = true
               this.getUsers()
               return true
             }
           })
+        }
+
+        if (activeNameExited === false) {
+          this.initActiveName()
+          this.getUsers()
         }
       },
       async getUsers () {
@@ -228,9 +233,6 @@
         if (response.statusCode === 100) {
           this.table.data = response.result.users
           this.table.count = response.result.count
-        } else if (response.statusCode === -1006) {
-          this.table.data = []
-          this.table.count = 0
         }
       },
       toggleGroup (group) {

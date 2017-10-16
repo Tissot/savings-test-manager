@@ -204,19 +204,15 @@
       checkActiveName () {
         let activeNameExited = false
 
-        if (this.activeName === null) {
-          this.initActiveName()
-        } else {
-          this.groups.some((element) => {
-            if (this.activeName === element) {
-              activeNameExited = true
-              return true
-            }
-          })
-
-          if (activeNameExited === false) {
-            this.initActiveName()
+        this.groups.some((element) => {
+          if (this.activeName === element) {
+            activeNameExited = true
+            return true
           }
+        })
+
+        if (activeNameExited === false) {
+          this.initActiveName()
         }
       },
       async getQuestions () {
