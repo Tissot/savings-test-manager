@@ -186,7 +186,6 @@
             group: this.groups.indexOf(this.activeName)
           }
         })).data
-        console.log(response)
 
         if (response.statusCode === 100) {
           this.table.data = response.result.onlineContents
