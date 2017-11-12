@@ -86,9 +86,7 @@
         groups: ['Peer Support 組', 'Earmarking Saving 組', '雙重干預組', '空白對照組'],
         types: ['文档', '视频'],
         toolbar: {
-          dataOperation: true,
-          searchBar: false,
-          pagination: false
+          dataOperation: true
         },
         slotForms: [
           {

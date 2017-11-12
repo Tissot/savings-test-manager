@@ -104,9 +104,7 @@
         groups: ['Peer Support 組', 'Earmarking Saving 組', '雙重干預組', '空白對照組'],
         answers: ['A', 'B', 'C', 'D'],
         toolbar: {
-          dataOperation: true,
-          searchBar: false,
-          pagination: false
+          dataOperation: true
         },
         slotForms: [
           {
