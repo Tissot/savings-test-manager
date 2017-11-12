@@ -20,6 +20,7 @@ import {
   tableColumn,
   tabPane,
   tabs,
+  tree,
   option,
   pagination
 } from 'element-ui'
@@ -39,11 +40,13 @@ Vue.use(table)
 Vue.use(tableColumn)
 Vue.use(tabPane)
 Vue.use(tabs)
+Vue.use(tree)
 Vue.use(option)
 Vue.use(pagination)
 
 Vue.prototype.$message = message
 Vue.prototype.$confirm = messageBox.confirm
+Vue.prototype.$prompt = messageBox.prompt
 
 import lang from 'element-ui/lib/locale/lang/zh-TW'
 import locale from 'element-ui/lib/locale'

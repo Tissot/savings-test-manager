@@ -11,7 +11,7 @@ import onlineContentsManagement from '../views/online-contents-management'
 import questionsManagement from '../views/questions-management'
 import messagesManagement from '../views/messages-management'
 import savingsSituation from '../views/savings-situation'
-import integrationExchangeSituation from '../views/integration-exchange-situation'
+import other from '../views/other'
 import notFound from '../views/not-found'
 
 Vue.use(VueRouter)
@@ -28,7 +28,7 @@ export default new VueRouter({
         { path: 'questions-management', component: questionsManagement },
         { path: 'messages-management', component: messagesManagement },
         { path: 'savings-situation', component: savingsSituation },
-        { path: 'integration-exchange-situation', component: integrationExchangeSituation }
+        { path: 'other', component: other }
       ]
     },
     { path: '*', component: notFound }

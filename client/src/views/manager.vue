@@ -9,7 +9,7 @@
           <el-menu-item index="/manager/questions-management">試題管理</el-menu-item>
           <el-menu-item index="/manager/messages-management">消息管理</el-menu-item>
           <el-menu-item index="/manager/savings-situation">儲蓄情況</el-menu-item>
-          <el-menu-item index="/manager/integration-exchange-situation">積分兌換情况</el-menu-item>
+          <el-menu-item index="/manager/other">其他</el-menu-item>
         </el-menu>
       </div>
       <div class="sign-out-container">

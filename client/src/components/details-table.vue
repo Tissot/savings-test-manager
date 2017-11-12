@@ -1,12 +1,13 @@
 <template>
   <div class="details-table">
     <div class="toolbar">
-			<div v-if="toolbar.dataOperation === true">
-				<el-button type="primary" icon="plus" @click="addData">添加</el-button>
+			<div>
+				<el-button type="primary" icon="plus" @click="addData" v-if="toolbar.viewMore !== true">添加</el-button>
 				<el-button
           type="danger"
           :disabled="dataSelected.length === 0"
           icon="delete2"
+          v-if="toolbar.dataOperation === true"
           @click="deleteData(dataSelected)"
         >刪除</el-button>
 			</div>
@@ -16,11 +17,19 @@
 				</el-select>
 				<el-button slot="append" icon="search" @click="searchData"></el-button>
 			</el-input>
-      <el-dialog :title="slotForms[0].title" :lock-scroll="false" :visible.sync="addDialogVisible">
+      <el-dialog
+        :title="slotForms[0].title"
+        :lock-scroll="false"
+        :visible.sync="addDialogVisible"
+        v-if="toolbar.viewMore !== true"
+      >
         <slot name="add-form"></slot>
       </el-dialog>
-      <el-dialog :title="slotForms[1].title" :lock-scroll="false" :visible.sync="editDialogVisible">
+      <el-dialog :title="slotForms[1].title" :lock-scroll="false" :visible.sync="editDialogVisible" v-if="toolbar.dataOperation === true">
         <slot name="edit-form"></slot>
+      </el-dialog>
+      <el-dialog size="large" :title="viewMoreTitle" :lock-scroll="false" :visible.sync="viewDialogVisible" v-if="toolbar.viewMore === true">
+        <slot name="view-more"></slot>
       </el-dialog>
 		</div>
     <div :style="tableStyle">
@@ -39,13 +48,20 @@
           :prop="table.prop"
           :label="table.label"
           :min-width="table.minWidth"
+          :fixed="table.fixed === true && mediaQueryList.matches === false ? 'left' : false"
           :resizable="table.resizable"
           :formatter="table.formatter"
         ></el-table-column>
         <el-table-column :fixed="mediaQueryList.matches === true ? false : 'right'" label="操作" width="147" :resizable="false" v-if="toolbar.dataOperation === true">
           <template scope="data">
             <el-button type="text" icon="edit" @click="editData(data.row)">編輯</el-button>
-            <el-button type="text" icon="delete2" @click="deleteData([data.row._id])">刪除</el-button>
+            <el-button type="text" icon="delete2" @click="deleteData([data.row._id])" class="delete">刪除</el-button>
+          </template>
+        </el-table-column>
+        <el-table-column :fixed="mediaQueryList.matches === true ? false : 'right'" label="查看" width="305" :resizable="false" v-if="toolbar.viewMore === true">
+          <template scope="data">
+            <el-button type="text" @click="getHistoricalSavingsSituations(data.row._id, 0)">查看歷史儲蓄情況</el-button>
+            <el-button type="text" @click="getHistoricalSavingsSituations(data.row._id, 1)" v-if="data.row.group === 1 || data.row.group === 2">查看子女教育儲蓄情況</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -73,6 +89,7 @@
         default () {
           return {
             dataOperation: false,
+            viewMore: false,
             searchBar: false,
             pagination: false
           }
@@ -89,7 +106,6 @@
         }
       },
       slotForms: {
-        required: true,
         type: Array,
         default () {
           return [
@@ -146,15 +162,28 @@
         },
         editDialogVisible: false,
         addDialogVisible: false,
+        viewDialogVisible: false,
+        viewMoreTitle: '歷史儲蓄情況',
         dataSelected: []
       }
     },
     methods: {
       initColumnsFixedWidth () {
         return new Promise((resolve, reject) => {
+          let initialWidth
+
+          if (this.toolbar.dataOperation === true) {
+            initialWidth = 482
+          } else if (this.toolbar.viewMore) {
+            initialWidth = 586
+          } else {
+            initialWidth = 281
+          }
+
           this.columnsFixedWidth = this.table.columns.reduce((result, element) => {
             return result + Number(element.minWidth)
-          }, this.toolbar.dataOperation ? 482 : 281)
+          }, initialWidth)
+
           resolve()
         })
       },
@@ -175,8 +204,14 @@
         this.slotForms[1].model = JSON.parse(JSON.stringify(row))
         this.editDialogVisible = true
       },
-      deleteData (data) {
-        this.$emit('delete-data', data)
+      deleteData (ids) {
+        this.$emit('delete-data', ids)
+      },
+      getHistoricalSavingsSituations (userId, savingsSituationType) {
+        const savingsSituationTypes = ['歷史儲蓄情況', '子女教育儲蓄情況']
+        this.$emit('get-historical-savings-situations', userId, savingsSituationType)
+        this.viewMoreTitle = savingsSituationTypes[savingsSituationType]
+        this.viewDialogVisible = true
       },
       addData () {
         this.addDialogVisible = true
@@ -229,29 +264,27 @@
         border-color: #20a0ff;
       }
 
-      .el-dialog {
+      .el-dialog--small {
         width: 480px;
-        
-        .el-dialog__body {
-          padding: 28px 36px;
 
-          .el-select {
-            width: 100%;
-          }
-
-          .el-form-item:last-child {
-            display: flex;
-            justify-content: flex-end;
-            margin-bottom: 0;
-          }
+        .el-select {
+          width: 100%;
         }
+
+        .el-form-item:last-child {
+          display: flex;
+          justify-content: flex-end;
+          margin-bottom: 0;
+        }
+      }
+
+      .el-dialog__body {
+          padding: 28px 36px;
       }
     }
 
-		.el-table {
-      .el-button + .el-button {
-        color: #ff4949;
-      }
+    .delete {
+      color: #ff4949;
     }
 
     .el-pagination {
