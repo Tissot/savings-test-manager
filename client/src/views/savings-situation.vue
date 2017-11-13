@@ -12,16 +12,36 @@
         @search-data="searchUsersSavingsSituations"
         @current-change="getUsersSavingsSituations"
         @size-change="getUsersSavingsSituations"
-      >   
-        <el-tree
-          slot="view-more"
-          :data="tree.historicalSavingsSituations"
-          :props="tree.props"
-          node-key="key"
-          :default-expand-all="true"
-          :render-content="renderContent"
-        >
-        </el-tree>
+      >
+        <ul slot="view-more">
+          <li v-for="yearlySavingsSituations of historicalSavingsSituations" :key="yearlySavingsSituations.key">
+            <div class="year">{{ yearlySavingsSituations.key }}年</div>
+            <ul class="level">
+              <li v-for="monthlySavingsSituation of yearlySavingsSituations.data" :key="monthlySavingsSituation.key">
+                <div class="month">{{ [
+                  '一月实际储蓄额',
+                  '二月实际储蓄额',
+                  '三月实际储蓄额',
+                  '四月实际储蓄额',
+                  '五月实际储蓄额',
+                  '六月实际储蓄额',
+                  '七月实际储蓄额',
+                  '八月实际储蓄额',
+                  '九月实际储蓄额',
+                  '十月实际储蓄额'
+                ].indexOf(monthlySavingsSituation.key) !== -1 && monthlySavingsSituation.key.substring(0, 2) || [
+                  '十一月实际储蓄额',
+                  '十二月实际储蓄额'
+                ].indexOf(monthlySavingsSituation.key) !== -1 && monthlySavingsSituation.key.substring(0, 3) }}</div>
+                <ul class="level">
+                  <li>實際儲蓄額：{{ monthlySavingsSituation.value === null ? '未填寫' : monthlySavingsSituation.value }}</li>
+                  <li v-if="monthlySavingsSituation.achieveExpectation !== undefined">是否達成儲蓄目標：{{ monthlySavingsSituation.achieveExpectation === true ? '是' : '否' }}</li>
+                  <li v-if="monthlySavingsSituation.reason !== undefined">{{ monthlySavingsSituation.achieveExpectation === true ? '' : '未' }}達成儲蓄目標的原因：{{ monthlySavingsSituation.reason === null ? '未填寫' : monthlySavingsSituation.reason }}</li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+        </ul>
       </details-table>
     </el-tabs>
   </div>
@@ -153,13 +173,7 @@
             }
           ]
         },
-        tree: {
-          historicalSavingsSituations: [],
-          props: {
-            label: 'key',
-            children: 'data'
-          }
-        }
+        historicalSavingsSituations: []
       }
     },
     methods: {
@@ -198,6 +212,7 @@
             pageSize: this.table.pageSize
           }
         })).data
+        console.log(response)
 
         if (response.statusCode === 100) {
           this.table.data = response.result.usersSavingsSituations
@@ -219,11 +234,12 @@
             userId
           }
         })).data
+        console.log(response.result.historicalSavingsSituations)
 
         if (response.statusCode === 100) {
-          this.tree.historicalSavingsSituations = response.result.historicalSavingsSituations
+          this.historicalSavingsSituations = response.result.historicalSavingsSituations
         } else if (response.statusCode === 101) {
-          this.tree.historicalSavingsSituations = []
+          this.historicalSavingsSituations = []
         }
       },
       async searchUsersSavingsSituations (searchObject) {
@@ -272,46 +288,6 @@
         if (response.statusCode === 100) {
           this.table.data = response.result.usersSavingsSituations
         }
-      },
-      renderContent (h, { node, data, store }) {
-        const key = [
-          '一月实际储蓄额',
-          '二月实际储蓄额',
-          '三月实际储蓄额',
-          '四月实际储蓄额',
-          '五月实际储蓄额',
-          '六月实际储蓄额',
-          '七月实际储蓄额',
-          '八月实际储蓄额',
-          '九月实际储蓄额',
-          '十月实际储蓄额',
-          '十一月实际储蓄额',
-          '十二月实际储蓄额'
-        ].indexOf(data.key)
-
-        return key !== -1 ? (
-          <span>
-            <span class="historical-savings-situation">
-              <span>{data.key}：</span>
-              <span>{data.value === null ? '未填寫' : data.value}</span>
-            </span>
-
-            {
-              data.reason !== undefined && <span>
-                <span class="historical-savings-situation">
-                  <span>是否達成儲蓄目標：</span>
-                  <span>{data.achieveExpectation === true ? '是' : '否'}</span>
-                </span>
-                <span class="historical-savings-situation">
-                  <span>{data.achieveExpectation === false ? '未' : ''}達成儲蓄目標的原因:</span>
-                  <span>{data.reason === null ? '未填寫' : data.reason}</span>
-                </span>
-              </span>
-            }
-          </span>
-        ) : (
-          <span>{data.key}年</span>
-        )
       }
     },
     created () {
@@ -322,8 +298,21 @@
 
 <style lang="less">
   #savings-situations {
-    .historical-savings-situation {
-      margin-right: 32px;
+    li {
+      list-style: none;
+    }
+
+    .year {
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    .month {
+      font-weight: bold;
+    }
+
+    .level {
+      margin-left: 16px;
     }
   }
 </style>

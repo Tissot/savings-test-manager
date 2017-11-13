@@ -20,7 +20,6 @@ import {
   tableColumn,
   tabPane,
   tabs,
-  tree,
   option,
   pagination
 } from 'element-ui'
@@ -40,7 +39,6 @@ Vue.use(table)
 Vue.use(tableColumn)
 Vue.use(tabPane)
 Vue.use(tabs)
-Vue.use(tree)
 Vue.use(option)
 Vue.use(pagination)
 

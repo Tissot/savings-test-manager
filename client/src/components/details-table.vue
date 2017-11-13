@@ -28,7 +28,7 @@
       <el-dialog :title="slotForms[1].title" :lock-scroll="false" :visible.sync="editDialogVisible" v-if="toolbar.dataOperation === true">
         <slot name="edit-form"></slot>
       </el-dialog>
-      <el-dialog size="large" :title="viewMoreTitle" :lock-scroll="false" :visible.sync="viewDialogVisible" v-if="toolbar.viewMore === true">
+      <el-dialog :title="viewMoreTitle" :lock-scroll="false" :visible.sync="viewDialogVisible" v-if="toolbar.viewMore === true">
         <slot name="view-more"></slot>
       </el-dialog>
 		</div>
