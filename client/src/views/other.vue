@@ -79,7 +79,7 @@
       }
     },
     created () {
-      // this.getOther()
+      this.getOther()
     }
   }
 </script>
