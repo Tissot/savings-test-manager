@@ -2,11 +2,11 @@
   <div id="other">
     <h2>其他</h2>
     <div class="other-item">
-      <span>問卷調查鏈接：{{ questionnaireURL }}</span>
+      <span>問卷調查鏈接：</span><span class="value">{{ questionnaireURL }}</span>
       <el-button type="text" @click="editInfo(0)" class="edit">編輯</el-button>
     </div>
     <div class="other-item">
-      <span>咨詢電話：{{ advisoryPhone }}</span>
+      <span>咨詢電話：</span><span class="value">{{ advisoryPhone }}</span>
       <el-button type="text" @click="editInfo(1)" class="edit">編輯</el-button>
     </div>
   </div>
@@ -79,7 +79,7 @@
       }
     },
     created () {
-      this.getOther()
+      // this.getOther()
     }
   }
 </script>
@@ -87,13 +87,11 @@
 <style lang="less">
   #other {
       .other-item {
-        display: flex;
-        align-items: center;
         margin-top: 24px;
       }
       
-      .edit {
-        margin-left: 24px;
+      .value {
+        margin-right: 24px;
       }
   }
 </style>
