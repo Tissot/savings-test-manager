@@ -2,7 +2,7 @@
   <div id="messages-management">
     <h2>消息管理</h2>
     <el-tabs v-model="activeName" @tab-click="toggleGroup">
-      <el-tab-pane v-for="group of groups" :key="group" :name="group" :label="group"></el-tab-pane>
+      <el-tab-pane v-for="group of groups.slice(0, 4)" :key="group" :name="group" :label="group"></el-tab-pane>
       <details-table
         :toolbar="toolbar"
         :slotForms.sync="slotForms"
@@ -21,7 +21,7 @@
             <el-input placeholder="請輸入消息標題" v-model.trim="slotForms[0].model.content"></el-input>
           </el-form-item>
           <el-form-item label="消息分組" prop="group" :rules="{ required: true, type: 'number', message: '請選擇消息分組', trigger: 'change' }">
-            <el-select placeholder="请选择消息分組" v-model="slotForms[0].model.group">
+            <el-select placeholder="請選擇消息分組" v-model="slotForms[0].model.group">
               <el-option v-for="(group, index) in groups" :key="index" :value="index" :label="group"></el-option>
             </el-select>
           </el-form-item>
@@ -46,7 +46,7 @@
     data () {
       return {
         activeName: window.sessionStorage.getItem('messagesManagementActiveName'),
-        groups: ['Peer Support 組', 'Earmarking Saving 組', '雙重干預組', '空白對照組'],
+        groups: ['Peer Support 組', 'Earmarking Saving 組', '雙重干預組', '空白對照組', '全部分組'],
         answers: ['A', 'B', 'C', 'D'],
         toolbar: {
           pagination: true
@@ -103,7 +103,7 @@
       checkActiveName () {
         let activeNameExited = false
 
-        this.groups.some((element) => {
+        this.groups.slice(0, 4).some((element) => {
           if (this.activeName === element) {
             activeNameExited = true
             return true
@@ -119,7 +119,7 @@
           method: 'post',
           url: '/message/getMessages',
           data: {
-            group: this.groups.indexOf(this.activeName),
+            group: this.groups.slice(0, 4).indexOf(this.activeName),
             startNum: (this.table.currentPage - 1) * this.table.pageSize,
             pageSize: this.table.pageSize
           }
@@ -131,7 +131,7 @@
         }
       },
       toggleGroup (group) {
-        if (this.groups.indexOf(this.activeName) !== -1) {
+        if (this.groups.slice(0, 4).indexOf(this.activeName) !== -1) {
           this.getMessages()
           window.sessionStorage.setItem('messagesManagementActiveName', group.name)
         }
