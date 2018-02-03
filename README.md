@@ -2,6 +2,14 @@
 
 > A manager system for the savings test based on Vue.js.
 
+## Screenshots
+
+<img src="./assets/screenshots/1.jpg" />
+<img src="./assets/screenshots/2.jpg" />
+<img src="./assets/screenshots/3.jpg" />
+<img src="./assets/screenshots/4.jpg" />
+<img src="./assets/screenshots/5.jpg" />
+
 ## Build Setup
 
 ``` bash
@@ -19,6 +27,5 @@ npm run build --report
 ```
 
 ## License
-GNU General Public License v3.0
 
-For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+GNU General Public License v3.0
