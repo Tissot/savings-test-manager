@@ -55,7 +55,7 @@
         })
 
         localStorage.setItem('managerToken', '')
-        this.$store.commit('setManagerToken', '')
+        axios.defaults.headers.common['token'] = ''
         this.$router.push('/')
         this.signingOut = false
       }
