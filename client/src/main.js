@@ -13,7 +13,6 @@ import './scripts/ajax'
 import Vue from 'vue'
 import App from './App'
 import router from './scripts/router'
-import store from './store/index'
 
 // 引入样式覆盖
 import './assets/styles/element-ui-cover.less'
@@ -24,7 +23,6 @@ Vue.config.productionTip = false
 new Vue({
   el: '#app',
   router,
-  store,
   template: '<App/>',
   components: { App }
 })

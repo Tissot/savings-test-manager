@@ -25,6 +25,8 @@
 </template>
 
 <script>
+  import axios from 'axios'
+
   export default {
     name: 'manager',
     data () {
@@ -72,7 +74,7 @@
       }
     },
     created () {
-      this.$store.commit('setManagerToken', localStorage.getItem('managerToken'))
+      axios.defaults.headers.common['token'] = localStorage.getItem('managerToken')
     }
   }
 </script>
