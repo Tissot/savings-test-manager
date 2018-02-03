@@ -4,11 +4,11 @@
 
 ## Screenshots
 
-<img src="./assets/screenshots/1.jpg" />
-<img src="./assets/screenshots/2.jpg" />
-<img src="./assets/screenshots/3.jpg" />
-<img src="./assets/screenshots/4.jpg" />
-<img src="./assets/screenshots/5.jpg" />
+<img src="./client/src/assets/screenshots/1.jpeg" />
+<img src="./client/src/assets/screenshots/2.jpeg" />
+<img src="./client/src/assets/screenshots/3.jpeg" />
+<img src="./client/src/assets/screenshots/4.jpeg" />
+<img src="./client/src/assets/screenshots/5.jpeg" />
 
 ## Build Setup
 
