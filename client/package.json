@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "A manager system for the savings test based on vue.js.",
   "author": "T-ming <759453441@qq.com>",
-  "private": true,
+  "license": "gpl-3.0",
   "scripts": {
     "dev": "node build/dev-server.js",
     "start": "node build/dev-server.js",
