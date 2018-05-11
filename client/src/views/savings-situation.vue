@@ -212,7 +212,6 @@
             pageSize: this.table.pageSize
           }
         })).data
-        console.log(response)
 
         if (response.statusCode === 100) {
           this.table.data = response.result.usersSavingsSituations
@@ -234,7 +233,6 @@
             userId
           }
         })).data
-        console.log(response.result.historicalSavingsSituations)
 
         if (response.statusCode === 100) {
           this.historicalSavingsSituations = response.result.historicalSavingsSituations
