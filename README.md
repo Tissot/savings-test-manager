@@ -1,6 +1,6 @@
 # savings-test-manager
 
-> 一个基于Vue.js的后台管理系统。
+一个基于Vue.js的后台管理系统。
 
 ## 页面加载速度优化
 
