@@ -43,7 +43,7 @@
         indexVisible: false,
         background: {
           num: 0,
-          size: 4
+          size: 3
         },
         backgroundVisible: true,
         togglingBackground: false,
@@ -58,7 +58,7 @@
     computed: {
       backgroundStyle () {
         return {
-          backgroundImage: `url(${require(`../assets/images/background-${this.background.num}.jpg`)})`
+          backgroundImage: `url(${require(`../assets/images/background-${this.background.num}.jpeg`)})`
         }
       }
     },
